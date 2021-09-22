@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { withStyles } from '@material-ui/core/styles'
-import Button from '@material-ui/core/Button'
+import { Button, Icon } from '@material-ui/core'
 import Dialog from '@material-ui/core/Dialog'
 import MuiDialogTitle from '@material-ui/core/DialogTitle'
 import MuiDialogContent from '@material-ui/core/DialogContent'
@@ -56,7 +56,8 @@ const DialogActions = withStyles((theme) => ({
 }))(MuiDialogActions)
 
 function FormModal(props) {
-    const { open, title, submitFormHandler, toggleModal } = props
+    const { open, title, submitFormHandler, toggleModal, saveActionHandler } =
+        props
 
     return (
         <div>
@@ -72,8 +73,17 @@ function FormModal(props) {
                 </DialogTitle>
                 <DialogContent dividers>{props.children}</DialogContent>
                 <DialogActions>
-                    <Button onClick={toggleModal} color="primary">
-                        Save changes
+                    <Button onClick={toggleModal} color="inherit">
+                        Close
+                    </Button>
+                    <Button
+                        color="primary"
+                        onClick={() => saveActionHandler()}
+                        variant="contained"
+                        type="submit"
+                    >
+                        <Icon>save</Icon>
+                        <span className="pl-2 capitalize">Submit</span>
                     </Button>
                 </DialogActions>
             </Dialog>

@@ -80,9 +80,14 @@ const commands = ({ name }) => {
 
 function AdultServicePage() {
     const [openModal, setopenModal] = useState(false)
-
+    const submitActionBtn = useRef(null)
     const handleClickOpen = () => {
         setopenModal(!openModal)
+    }
+
+    const saveActionHandler = () => {
+        submitActionBtn.current.click()
+        console.log({ submitActionBtn })
     }
 
     return (
@@ -118,8 +123,12 @@ function AdultServicePage() {
                                     open={openModal}
                                     title="Add New Member"
                                     toggleModal={handleClickOpen}
+                                    submitActionBtn={submitActionBtn}
+                                    saveActionHandler={saveActionHandler}
                                 >
-                                    <AddMemberForm />
+                                    <AddMemberForm
+                                        submitActionBtn={submitActionBtn}
+                                    />
                                 </FormModal>
                             </Grid>
                             <Grid item lg={2} md={2} sm={6} xs={12}>

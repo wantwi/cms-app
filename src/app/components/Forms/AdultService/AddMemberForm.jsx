@@ -1,280 +1,292 @@
 import React, { useState, useEffect } from 'react'
+
 import {
-    ValidatorForm,
-    TextValidator,
-    SelectValidator,
-} from 'react-material-ui-form-validator'
-import {
-    Button,
     Icon,
     Grid,
-    Radio,
-    RadioGroup,
-    FormControlLabel,
-    Checkbox,
+    TextField,
+    InputLabel,
+    FormControl,
+    MenuItem,
+    Select,
 } from '@material-ui/core'
+import { Button, Form } from 'react-bootstrap'
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
 } from '@material-ui/pickers'
 import 'date-fns'
 import DateFnsUtils from '@date-io/date-fns'
+import { useFormik } from 'formik'
+import * as yup from 'yup'
+import './AddMemberForm.css'
+import FormikComponent from '../formikComponent/FormikComponent'
 
-const AddMemberForm = () => {
+const INITIAL_MEMBER_FROM = {
+    firstName: '',
+    lastName: '',
+    mobile: '',
+    gender: '',
+
+    others: '',
+    birthDate: '',
+    marritalStatus: '',
+    occupation: '',
+    location: '',
+}
+const phoneRegExp =
+    /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/
+
+let schema = yup.object().shape({
+    firstName: yup.string().required('First name is required'),
+    lastName: yup.string().required('Last name is required'),
+    gender: yup.string().required('Gender is required'),
+    birthDate: yup.date().required('Select birth date'),
+    mobile: yup
+        .string()
+        .matches(phoneRegExp, '*Mobile number is not valid')
+        .required('*Mobile number required'),
+    //mobile: yup.number(),
+})
+
+const AddMemberForm = ({ submitActionBtn }) => {
     const [state, setState] = useState({
         date: null,
     })
 
-    useEffect(() => {
-        ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
-            console.log(value)
-
-            if (value !== state.password) {
-                return false
-            }
-            return true
-        })
-        return () => ValidatorForm.removeValidationRule('isPasswordMatch')
-    }, [state.password])
-
-    const handleSubmit = (event) => {
-        // console.log("submitted");
-        // console.log(event);
-    }
-
-    const handleChange = (event) => {
-        event.persist()
-        setState({
-            ...state,
-            [event.target.name]: event.target.value,
-        })
-    }
-
-    const handleDateChange = (date) => {
-        setState({ ...state, date })
-    }
-
-    const {
-        username,
-        firstName,
-        lastName,
-        creditCard,
-        mobile,
-        password,
-        confirmPassword,
-        gender,
-        date,
-        others,
-        birthDate,
-        mirritalStatus,
-        email,
-
-        occupation,
-        location,
-    } = state
+    const formik = useFormik({
+        initialValues: INITIAL_MEMBER_FROM,
+        validationSchema: schema,
+        onSubmit: (values) => {
+            console.log(JSON.stringify(values, null, 2))
+        },
+    })
 
     return (
         <div style={{ width: '60vw' }}>
-            <ValidatorForm onSubmit={handleSubmit} onError={() => null}>
-                <Grid container spacing={6}>
+            <form onSubmit={formik.handleSubmit}>
+                <Grid container spacing={4}>
                     <Grid item lg={4} md={4} sm={12} xs={12}>
-                        <TextValidator
-                            className="mb-4 w-full"
-                            label="First Name"
-                            onChange={handleChange}
-                            type="text"
-                            name="firstName"
-                            value={firstName || ''}
-                            validators={[
-                                'required',
-                                'minStringLength: 4',
-                                'maxStringLength: 9',
-                            ]}
-                            errorMessages={['this field is required']}
-                            variant="outlined"
-                            size="small"
-                        />
-                    </Grid>
-                    <Grid item lg={4} md={4} sm={12} xs={12}>
-                        <TextValidator
-                            variant="outlined"
-                            size="small"
-                            className="mb-4 w-full"
-                            label="Last Name"
-                            onChange={handleChange}
-                            type="text"
-                            name="lastName"
-                            value={lastName || ''}
-                            validators={['required']}
-                            errorMessages={['this field is required']}
-                        />
-                    </Grid>
-                    <Grid item lg={4} md={4} sm={12} xs={12}>
-                        <TextValidator
-                            className="mb-4 w-full"
-                            label="Others (Optional)"
-                            onChange={handleChange}
-                            type="text"
-                            name="Others"
-                            value={others || ''}
-                            validators={['required']}
-                            errorMessages={['this field is required']}
-                            variant="outlined"
-                            size="small"
-                        />
-                    </Grid>
-                </Grid>
-
-                <Grid container spacing={6}>
-                    <Grid item lg={4} md={4} sm={12} xs={12}>
-                        <SelectValidator
-                            className="mb-4 w-full"
-                            label="Gender"
-                            onChange={handleChange}
-                            type="select"
-                            name="gender"
-                            value={gender || ''}
-                            variant="outlined"
-                            size="small"
-                        />
-                    </Grid>
-
-                    <Grid item lg={4} md={4} sm={12} xs={12}>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                            <KeyboardDatePicker
-                                className="mb-4 w-full"
-                                margin="none"
-                                id="mui-pickers-date"
-                                label="Birth Date"
-                                inputVariant="outlined"
+                        <Form.Group controlId="">
+                            <Form.Label>First Name</Form.Label>
+                            <Form.Control
                                 type="text"
-                                autoOk={false}
-                                value={date}
-                                size="small"
-                                onChange={handleDateChange}
-                                KeyboardButtonProps={{
-                                    'aria-label': 'change date',
-                                }}
+                                name="firstName"
+                                placeholder="First Name"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.firstName}
+                                className={
+                                    formik.touched.firstName &&
+                                    formik.errors.firstName
+                                        ? 'error'
+                                        : null
+                                }
                             />
-                        </MuiPickersUtilsProvider>
+                            {formik.touched.firstName &&
+                            formik.errors.firstName ? (
+                                <div className="error-message">
+                                    {formik.errors.firstName}
+                                </div>
+                            ) : null}
+                        </Form.Group>
                     </Grid>
                     <Grid item lg={4} md={4} sm={12} xs={12}>
-                        <TextValidator
-                            variant="outlined"
-                            size="small"
-                            className="mb-4 w-full"
-                            label="Marrital Status"
-                            onChange={handleChange}
-                            type="text"
-                            name="mirritalStatus"
-                            value={mirritalStatus || ''}
-                            validators={['required']}
-                            errorMessages={['this field is required']}
-                        />
+                        <Form.Group controlId="formBlog">
+                            <Form.Label>Last Name</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="lastName"
+                                placeholder="Last Name"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.lastName}
+                                className={
+                                    formik.touched.lastName &&
+                                    formik.errors.lastName
+                                        ? 'error'
+                                        : null
+                                }
+                            />
+                            {formik.touched.lastName &&
+                            formik.errors.lastName ? (
+                                <div className="error-message">
+                                    {formik.errors.lastName}
+                                </div>
+                            ) : null}
+                        </Form.Group>
+                    </Grid>
+                    <Grid item lg={4} md={4} sm={12} xs={12}>
+                        <Form.Group controlId="formBlog">
+                            <Form.Label>Others</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="others"
+                                placeholder="Others (optional)"
+                                onChange={formik.handleChange}
+                                value={formik.values.others}
+                            />
+                        </Form.Group>
                     </Grid>
                 </Grid>
 
                 <Grid container spacing={6}>
                     <Grid item lg={4} md={4} sm={12} xs={12}>
-                        <TextValidator
-                            className="mb-4 w-full"
-                            label="Location"
-                            onChange={handleChange}
-                            type="text"
-                            name="location"
-                            value={location || ''}
-                            variant="outlined"
-                            size="small"
-                        />
+                        <Form.Group controlId="">
+                            <Form.Label>Gender</Form.Label>
+                            <Form.Select
+                                size="md"
+                                name="gender"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.gender}
+                                className={
+                                    formik.touched.gender &&
+                                    formik.errors.gender
+                                        ? 'error'
+                                        : null
+                                }
+                            >
+                                <option value="">Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </Form.Select>
+                            {formik.touched.gender && formik.errors.gender ? (
+                                <div className="error-message">
+                                    {formik.errors.gender}
+                                </div>
+                            ) : null}
+                        </Form.Group>
                     </Grid>
 
                     <Grid item lg={4} md={4} sm={12} xs={12}>
-                        <TextValidator
-                            variant="outlined"
-                            size="small"
-                            className="mb-4 w-full"
-                            label="Mobile Number"
-                            onChange={handleChange}
-                            type="text"
-                            name="mobile"
-                            value={mobile || ''}
-                            validators={[
-                                'required',
-                                'minStringLength:10',
-                                'maxStringLength: 10',
-                            ]}
-                            errorMessages={['this field is required']}
-                        />
+                        <Form.Group controlId="">
+                            <Form.Label>Birth Date</Form.Label>
+                            <Form.Control
+                                type="date"
+                                name="birthDate"
+                                placeholder="Last Name"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.birthDate}
+                                className={
+                                    formik.touched.birthDate &&
+                                    formik.errors.birthDate
+                                        ? 'error'
+                                        : null
+                                }
+                            />
+                            {formik.touched.birthDate &&
+                            formik.errors.birthDate ? (
+                                <div className="error-message">
+                                    {formik.errors.birthDate}
+                                </div>
+                            ) : null}
+                        </Form.Group>
                     </Grid>
                     <Grid item lg={4} md={4} sm={12} xs={12}>
-                        <TextValidator
-                            variant="outlined"
-                            size="small"
-                            className="mb-4 w-full"
-                            label="Occupation"
-                            onChange={handleChange}
-                            type="text"
-                            name="occupation"
-                            value={occupation || ''}
-                            validators={['required']}
-                            errorMessages={['this field is required']}
-                        />
+                        <Form.Group controlId="">
+                            <Form.Label>Marrital Status</Form.Label>
+                            <Form.Select
+                                size="md"
+                                name="marritalStatus"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.marritalStatus}
+                                className={
+                                    formik.touched.marritalStatus &&
+                                    formik.errors.marritalStatus
+                                        ? 'error'
+                                        : null
+                                }
+                            >
+                                <option value="">Marrital Status</option>
+                                <option value="Single">Single</option>
+                                <option value="Married">Married</option>
+                            </Form.Select>
+                            {formik.touched.marritalStatus &&
+                            formik.errors.marritalStatus ? (
+                                <div className="error-message">
+                                    {formik.errors.marritalStatus}
+                                </div>
+                            ) : null}
+                        </Form.Group>
                     </Grid>
                 </Grid>
 
-                <Grid container spacing={6}>
+                <Grid container spacing={4}>
                     <Grid item lg={4} md={4} sm={12} xs={12}>
-                        <TextValidator
-                            className="mb-4 w-full"
-                            label="Location"
-                            onChange={handleChange}
-                            type="text"
-                            name="location"
-                            value={location || ''}
-                            variant="outlined"
-                            size="small"
-                        />
-                    </Grid>
-
-                    <Grid item lg={4} md={4} sm={12} xs={12}>
-                        <TextValidator
-                            variant="outlined"
-                            size="small"
-                            className="mb-4 w-full"
-                            label="Mobile Number"
-                            onChange={handleChange}
-                            type="text"
-                            name="mobile"
-                            value={mobile || ''}
-                            validators={[
-                                'required',
-                                'minStringLength:10',
-                                'maxStringLength: 10',
-                            ]}
-                            errorMessages={['this field is required']}
-                        />
+                        <Form.Group controlId="">
+                            <Form.Label>Location</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="location"
+                                placeholder="Location"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.location}
+                                className={
+                                    formik.touched.location &&
+                                    formik.errors.location
+                                        ? 'error'
+                                        : null
+                                }
+                            />
+                            {formik.touched.location &&
+                            formik.errors.location ? (
+                                <div className="error-message">
+                                    {formik.errors.location}
+                                </div>
+                            ) : null}
+                        </Form.Group>
                     </Grid>
                     <Grid item lg={4} md={4} sm={12} xs={12}>
-                        <TextValidator
-                            variant="outlined"
-                            size="small"
-                            className="mb-4 w-full"
-                            label="Occupation"
-                            onChange={handleChange}
-                            type="text"
-                            name="occupation"
-                            value={occupation || ''}
-                            validators={['required']}
-                            errorMessages={['this field is required']}
-                        />
+                        <Form.Group controlId="formBlog">
+                            <Form.Label>Mobile Number</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="mobile"
+                                placeholder="Last Name"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.mobile}
+                                className={
+                                    formik.touched.mobile &&
+                                    formik.errors.mobile
+                                        ? 'error'
+                                        : null
+                                }
+                            />
+                            {formik.touched.mobile && formik.errors.mobile ? (
+                                <div className="error-message">
+                                    {formik.errors.mobile}
+                                </div>
+                            ) : null}
+                        </Form.Group>
+                    </Grid>
+                    <Grid item lg={4} md={4} sm={12} xs={12}>
+                        <Form.Group controlId="formBlog">
+                            <Form.Label>Occupation</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="occupation"
+                                placeholder="Cccupation (optional)"
+                                onChange={formik.handleChange}
+                                value={formik.values.occupation}
+                            />
+                        </Form.Group>
                     </Grid>
                 </Grid>
 
-                <Button color="secondary" variant="contained" type="submit">
+                <Button
+                    ref={submitActionBtn}
+                    color="secondary"
+                    variant="contained"
+                    type="submit"
+                >
                     <Icon>send</Icon>
                     <span className="pl-2 capitalize">Submit</span>
                 </Button>
-            </ValidatorForm>
+            </form>
         </div>
     )
 }

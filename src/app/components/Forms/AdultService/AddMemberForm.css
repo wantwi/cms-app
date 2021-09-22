@@ -9,3 +9,6 @@
     position: absolute;
     font-size: 0.8em;
 }
+label {
+    font-weight: bold !important;
+}

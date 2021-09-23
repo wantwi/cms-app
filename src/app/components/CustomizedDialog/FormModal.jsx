@@ -13,7 +13,7 @@ const styles = (theme) => ({
     root: {
         margin: 0,
         padding: theme.spacing(2),
-        background: '#FFAF38',
+        background: '#1976d2',
         color: 'white',
     },
     closeButton: {
@@ -73,8 +73,10 @@ function FormModal(props) {
                 </DialogTitle>
                 <DialogContent dividers>{props.children}</DialogContent>
                 <DialogActions>
-                    <Button onClick={toggleModal} color="inherit">
-                        Close
+                    <Button onClick={toggleModal} className="bg-error">
+                        <Icon>close</Icon>
+
+                        <span className="pl-2 capitalize">Close</span>
                     </Button>
                     <Button
                         color="primary"
@@ -83,7 +85,7 @@ function FormModal(props) {
                         type="submit"
                     >
                         <Icon>save</Icon>
-                        <span className="pl-2 capitalize">Submit</span>
+                        <span className="pl-2 capitalize">Save</span>
                     </Button>
                 </DialogActions>
             </Dialog>

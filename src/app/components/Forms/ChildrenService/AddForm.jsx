@@ -43,7 +43,7 @@ let schema = yup.object().shape({
     mobile: yup.number(),
 })
 
-const AddMemberForm = ({ submitActionBtn }) => {
+const AddForm = ({ submitActionBtn }) => {
     const [date, setDate] = useState(INITIAL_MEMBER_FROM.date)
 
     const [orgs, setOrgs] = React.useState(INITIAL_MEMBER_FROM.organisation)
@@ -191,28 +191,6 @@ const AddMemberForm = ({ submitActionBtn }) => {
                     </Grid>
                     <Grid item lg={4} md={4} sm={4} xs={12}>
                         <TextField
-                            size="small"
-                            className="mb-4 w-full"
-                            label="Marrital Status"
-                            type="text"
-                            name="mirritalStatus"
-                            onChange={formik.handleChange}
-                            value={formik.values.mirritalStatus}
-                            error={
-                                formik.touched.mirritalStatus &&
-                                Boolean(formik.errors.mirritalStatus)
-                            }
-                            helpertext={
-                                formik.touched.mirritalStatus &&
-                                formik.errors.mirritalStatus
-                            }
-                        />
-                    </Grid>
-                </Grid>
-
-                <Grid container spacing={6}>
-                    <Grid item lg={4} md={4} sm={4} xs={12}>
-                        <TextField
                             className="mb-4 w-full"
                             label="Location"
                             type="text"
@@ -230,19 +208,33 @@ const AddMemberForm = ({ submitActionBtn }) => {
                             }
                         />
                     </Grid>
+                </Grid>
+
+                <Grid container spacing={6}>
+                    <Grid item lg={4} md={4} sm={4} xs={12}>
+                        <TextField
+                            className="mb-4 w-full"
+                            label="Mobile Number"
+                            type="text"
+                            name="contact"
+                            size="small"
+                            onChange={formik.handleChange}
+                            value={formik.values.contact}
+                        />
+                    </Grid>
 
                     <Grid item lg={4} md={4} sm={4} xs={12}>
                         <TextField
                             size="small"
                             className="mb-4 w-full"
-                            label="Mobile Number"
+                            label="Parent Name"
                             type="text"
-                            name="mobile"
+                            name="parentName"
                             onChange={formik.handleChange}
-                            value={formik.values.mobile}
+                            value={formik.values.parentName}
                             error={
-                                formik.touched.mobile &&
-                                Boolean(formik.errors.mobile)
+                                formik.touched.parentName &&
+                                Boolean(formik.errors.parentName)
                             }
                             helpertext={
                                 formik.touched.mobile && formik.errors.mobile
@@ -357,4 +349,4 @@ const AddMemberForm = ({ submitActionBtn }) => {
     )
 }
 
-export default AddMemberForm
+export default AddForm

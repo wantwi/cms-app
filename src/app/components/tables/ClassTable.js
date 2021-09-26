@@ -13,7 +13,7 @@ import {
 } from '@syncfusion/ej2-react-grids'
 import { Icon, Button, IconButton, Fab } from '@material-ui/core'
 
-function ChildrenTable({ data }) {
+function ClassTable({ data }) {
     const grid = useRef(null)
 
     const toolbarClick = (args) => {
@@ -28,12 +28,12 @@ function ChildrenTable({ data }) {
         }
     }
 
-    const commands = ({ name }) => {
+    const commands = ({ className }) => {
         return (
             <>
                 <IconButton
-                    id={name.replace(' ', '')}
-                    onClick={() => editEventListener(name)}
+                    id={className.replace(' ', '')}
+                    onClick={() => editEventListener(className)}
                 >
                     <Icon>edit</Icon>
                 </IconButton>
@@ -51,23 +51,6 @@ function ChildrenTable({ data }) {
         alert(id)
     }
 
-    const ImageTemplate = ({ image }) => {
-        return (
-            <div className="p-0 m-0">
-                <img
-                    style={{
-                        width: '45px',
-                        height: '45px',
-                        padding: 0,
-                        margin: '0 auto',
-                    }}
-                    src={image}
-                    alt="image"
-                />
-            </div>
-        )
-    }
-
     return (
         <GridComponent
             dataSource={data}
@@ -82,19 +65,29 @@ function ChildrenTable({ data }) {
         >
             <ColumnsDirective>
                 <ColumnDirective
-                    headerText="Member Image"
-                    template={ImageTemplate}
-                    field="image"
-                    width="70"
-                    textAlign="Center"
+                    headerText="Class Name"
+                    field="className"
+                    width="150"
                 />
-                <ColumnDirective headerText="Name" field="name" width="100" />
-                <ColumnDirective headerText="Class" field="class" width="100" />
                 <ColumnDirective
-                    headerText="Parent Contact"
-                    field="parentContact"
+                    headerText="Class Leader"
+                    field="classLeader"
+                    width="150"
+                />
+                <ColumnDirective
+                    headerText="Deputy"
+                    field="deputyClassLeader"
+                    width="150"
+                />
+                <ColumnDirective
+                    headerText="Meeting Days"
+                    field="meetingDays"
                     width="100"
-                    format="C2"
+                />
+                <ColumnDirective
+                    headerText="Status"
+                    field="status"
+                    width="100"
                 />
                 <ColumnDirective
                     headerText="Action"
@@ -108,4 +101,4 @@ function ChildrenTable({ data }) {
     )
 }
 
-export default ChildrenTable
+export default ClassTable

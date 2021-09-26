@@ -3,20 +3,12 @@ import { Grid, Card } from '@material-ui/core'
 import { Breadcrumb } from 'app/components'
 import Image from '../001-man.svg'
 import { Icon, Button, IconButton, Fab } from '@material-ui/core'
-// import {
-//     Button,
-//     Icon,
-//     Grid,
-//     Radio,
-//     RadioGroup,
-//     FormControlLabel,
-//     Checkbox,
-// } from '@material-ui/core'
-import CustomTableComponent from 'app/components/tables/CustomTableComponent'
 
+import CustomTableComponent from 'app/components/tables/CustomTableComponent'
+import './AdultServicePage.css'
 import FormModal from 'app/components/CustomizedDialog/FormModal'
 import AddMemberForm from 'app/components/Forms/AdultService/AddMemberForm'
-
+import { useAppState } from '../../../../stateManager/AppStateProvider'
 const data = [
     {
         image: Image,
@@ -81,6 +73,13 @@ const commands = ({ name }) => {
 function AdultServicePage() {
     const [openModal, setopenModal] = useState(false)
     const submitActionBtn = useRef(null)
+
+    const [state, dispatch] = useAppState()
+
+    console.log({ state })
+
+    console.log({ dispatch })
+
     const handleClickOpen = () => {
         setopenModal(!openModal)
     }
@@ -104,21 +103,21 @@ function AdultServicePage() {
                 <Grid item lg={12} md={12} sm={12} xs={12}>
                     <Card className="px-6 pt-2 pb-4 mb-3">
                         <Grid container spacing={3}>
-                            <Grid item lg={3} md={3} sm={12} xs={12}>
+                            <Grid item lg={4} md={4} sm={12} xs={12}>
                                 <div>
                                     <input
-                                        className="form-control"
+                                        className="form-control fw-8"
                                         type="text"
                                         placeholder="Search by firstname"
                                     />
-                                    <span>
+                                    <span style={{ float: 'left' }}>
                                         <IconButton>
                                             <Icon color="primary">search</Icon>
                                         </IconButton>
                                     </span>
                                 </div>
                             </Grid>
-                            <Grid item lg={7} md={7} sm={12} xs={12}>
+                            <Grid item lg={6} md={6} sm={12} xs={12}>
                                 <FormModal
                                     open={openModal}
                                     title="Add New Member"

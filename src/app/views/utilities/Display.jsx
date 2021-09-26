@@ -100,7 +100,7 @@ const Display = () => {
                     ]}
                 />
             </div>
-            <SimpleCard title="display">
+            {/* <SimpleCard title="display">
                 <div className="py-2"></div>
                 {classList.map((item) => (
                     <div
@@ -115,7 +115,7 @@ const Display = () => {
                         </div>
                     </div>
                 ))}
-            </SimpleCard>
+            </SimpleCard> */}
         </div>
     )
 }

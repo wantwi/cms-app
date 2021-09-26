@@ -60,7 +60,7 @@ const HeightWidth = () => {
                     ]}
                 />
             </div>
-            <SimpleCard title="Height Width">
+            {/* <SimpleCard title="Height Width">
                 <p className="m-0">
                     The classes are named using the format-
                     <code>(property)-(size)</code>
@@ -118,7 +118,7 @@ const HeightWidth = () => {
                         </div>
                     </div>
                 ))}
-            </SimpleCard>
+            </SimpleCard> */}
         </div>
     )
 }

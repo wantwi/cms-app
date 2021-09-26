@@ -56,7 +56,7 @@ const MiscClass = () => {
                     ]}
                 />
             </div>
-            <SimpleCard title="Miscellaneous">
+            {/* <SimpleCard title="Miscellaneous">
                 <div className="py-2"></div>
                 {classList.map((item) => (
                     <div
@@ -71,7 +71,7 @@ const MiscClass = () => {
                         </div>
                     </div>
                 ))}
-            </SimpleCard>
+            </SimpleCard> */}
         </div>
     )
 }

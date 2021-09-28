@@ -1,5 +1,6 @@
 import React, { useState,useRef } from 'react'
 import { Icon, Button, IconButton, Fab } from '@material-ui/core'
+import Image from '../../views/members/001-man.svg'
 const ImagePreviewComponent = () => {
     const [selectedImage, setSelectedImage] = useState(null)
 
@@ -27,7 +28,7 @@ const ImagePreviewComponent = () => {
                         src={
                             selectedImage
                                 ? URL.createObjectURL(selectedImage)
-                                : null
+                                : Image
                         }
                         style={styles.image}
                         alt=""

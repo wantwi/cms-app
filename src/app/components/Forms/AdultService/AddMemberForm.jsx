@@ -19,6 +19,7 @@ import DateFnsUtils from '@date-io/date-fns'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 
+
 const INITIAL_MEMBER_FROM = {
     firstName: '',
     lastName: '',
@@ -345,11 +346,12 @@ const AddMemberForm = ({ submitActionBtn,setopenModal }) => {
 
                 <Button
                     onClick={()=>setopenModal(true)}
-                    color="secondary"
+                    color="primary"
                     variant="contained"
                     type="submit"
+                    style={{float:"right"}}
                 >
-                    <Icon>send</Icon>
+                    <Icon>save</Icon>
                     <span className="pl-2 capitalize">Submit</span>
                 </Button>
             </form>

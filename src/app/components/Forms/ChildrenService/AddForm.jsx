@@ -43,7 +43,7 @@ let schema = yup.object().shape({
     mobile: yup.number(),
 })
 
-const AddForm = ({ submitActionBtn }) => {
+const AddForm = ({ submitActionBtn,setopenModal }) => {
     const [date, setDate] = useState(INITIAL_MEMBER_FROM.date)
 
     const [orgs, setOrgs] = React.useState(INITIAL_MEMBER_FROM.organisation)
@@ -72,7 +72,7 @@ const AddForm = ({ submitActionBtn }) => {
     })
 
     return (
-        <div style={{ width: '60vw' }}>
+        <div>
             <form onSubmit={formik.handleSubmit}>
                 <Grid container spacing={4}>
                     <Grid item lg={4} md={4} sm={4} xs={12}>
@@ -336,12 +336,13 @@ const AddForm = ({ submitActionBtn }) => {
                 </Grid>
 
                 <Button
-                    ref={submitActionBtn}
-                    color="secondary"
+                     onClick={()=>setopenModal(true)}
+                    color="primary"
                     variant="contained"
                     type="submit"
+                    style={{float:"right"}}
                 >
-                    <Icon>send</Icon>
+                    <Icon>save</Icon>
                     <span className="pl-2 capitalize">Submit</span>
                 </Button>
             </form>

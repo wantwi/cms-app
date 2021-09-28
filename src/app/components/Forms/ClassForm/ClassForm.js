@@ -16,6 +16,9 @@ import {
 import 'date-fns'
 import { TimePickerComponent } from '@syncfusion/ej2-react-calendars'
 
+import "./ClassForm.css"
+
+
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 
@@ -45,9 +48,13 @@ let schema = yup.object().shape({
     deputyClassLeader: yup.date().required(),
     meetingDays: yup.number(),
 })
+let m;
 
-const ClassForm = ({ submitActionBtn }) => {
+const ClassForm = ({ submitActionBtn,setopenModal }) => {
     const [value, setValue] = React.useState(null)
+    const [focus, setfocus] = useState(false)
+
+   
     // const [date, setDate] = useState(INITIAL_MEMBER_FROM.date)
 
     // const [orgs, setOrgs] = React.useState(INITIAL_MEMBER_FROM.organisation)
@@ -66,14 +73,28 @@ const ClassForm = ({ submitActionBtn }) => {
     //     setDate(d)
     // }
 
+
+
     const formik = useFormik({
         initialValues: INITIAL_MEMBER_FROM,
         validationSchema: schema,
         onSubmit: (values) => {
+          
             // values.organisation = orgs
             console.log(JSON.stringify(values, null, 2))
         },
     })
+
+    const handlefieldFocus =()=>{
+        formik.values.dateRange.legth >0 ?setfocus(false) :setfocus(true) 
+       
+        
+    }
+    const handlefieldBlur =()=>{
+     
+        formik.values.dateRange===""? setfocus(false) :setfocus(true)
+        
+    }
 
     return (
         <div>
@@ -210,8 +231,9 @@ const ClassForm = ({ submitActionBtn }) => {
                         </FormControl>
                     </Grid>
 
-                    <Grid item lg={6} md={6} sm={6} xs={12}>
-                        <TimePickerComponent format={{ skeleton: 'Hms' }} />
+                    <Grid item lg={6} md={6} sm={6} xs={12} style={{position:"relative"}}>
+                        <label className ={focus?"isFocus": "notFocus"} >Meeting time</label>
+                        <TimePickerComponent onChange={formik.handleChange} name="dateRange" onFocus={handlefieldFocus} onBlur={handlefieldBlur}  format={{ skeleton: 'Hms' }} style={{marginTop:18}} />
                         {/* <TextField
                             size="small"
                             className="mb-4 w-full"
@@ -232,15 +254,30 @@ const ClassForm = ({ submitActionBtn }) => {
                     </Grid>
                 </Grid>
 
+                <div style={{marginTop:30}}>
                 <Button
-                    ref={submitActionBtn}
-                    color="secondary"
+                    onClick={()=>setopenModal(true)}
+                    color="primary"
                     variant="contained"
                     type="submit"
+                    style={{float:"right"}}
                 >
-                    <Icon>send</Icon>
+                    <Icon>save</Icon>
                     <span className="pl-2 capitalize">Submit</span>
                 </Button>
+                <Button
+                    onClick={()=>setopenModal(true)}
+                    color="inherit"
+                    variant="contained"
+                    type="button"
+                    style={{float:"right", marginRight:20}}
+                >
+                    <Icon>cancel</Icon>
+                    <span className="pl-2 capitalize">Cancel</span>
+                </Button>
+                </div>
+
+             
             </form>
         </div>
     )

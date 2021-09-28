@@ -1,0 +1,18 @@
+.isFocus{
+        position: absolute;
+        top:20px;
+        color: #9398ab;
+        font-size: 11px;
+      
+        transition-timing-function: ease-in;
+
+        
+
+}
+
+.notFocus{
+    position: absolute;
+    top:47px;
+    color: #9398ab;
+    
+}

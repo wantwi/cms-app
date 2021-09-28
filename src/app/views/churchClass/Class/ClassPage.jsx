@@ -44,37 +44,29 @@ function ClassPage() {
                     ]}
                 />
             </div>
-            <Grid container spacing={3}>
+
+            {openModal ? (
+                <Grid container spacing={3}>
                 <Grid item lg={12} md={12} sm={12} xs={12}>
                     <Card className="px-6 pt-2 pb-4 mb-3">
                         <Grid container spacing={3}>
-                            <Grid item lg={3} md={3} sm={12} xs={12}>
+                            <Grid item lg={4} md={4} sm={12} xs={12}>
                                 <div>
                                     <input
-                                        className="form-control"
+                                        className="form-control fw-8"
                                         type="text"
                                         placeholder="Search by firstname"
                                     />
-                                    <span>
+                                    <span style={{ float: 'left' }}>
                                         <IconButton>
-                                            <Icon color="primary">search</Icon>
+                                            <Icon color="primary">
+                                                search
+                                            </Icon>
                                         </IconButton>
                                     </span>
                                 </div>
                             </Grid>
-                            <Grid item lg={7} md={7} sm={12} xs={12}>
-                                <FormModal
-                                    open={openModal}
-                                    title="Add New Class"
-                                    toggleModal={handleClickOpen}
-                                    submitActionBtn={submitActionBtn}
-                                    saveActionHandler={saveActionHandler}
-                                >
-                                    <ClassForm
-                                        submitActionBtn={submitActionBtn}
-                                    />
-                                </FormModal>
-                            </Grid>
+
                             <Grid item lg={2} md={2} sm={6} xs={12}>
                                 <Button
                                     style={{ float: 'right' }}
@@ -85,16 +77,32 @@ function ClassPage() {
                                 >
                                     <Icon>person</Icon>
                                     <span className="pl-2 capitalize">
-                                        Add Member
+                                        Add Class
                                     </span>
                                 </Button>
                             </Grid>
                         </Grid>
 
-                        <ClassTable data={CLASS_DATA} />
+                        <ClassTable data={[]} />
                     </Card>
                 </Grid>
             </Grid>
+            ) : (
+                <Grid
+                    container
+                    spacing={2}
+                    style={{ width: '50vw', margin: '0 auto' }}
+                >
+                    <Grid item lg={12} xl={12} xs={12} md={12}>
+                        <Card raised className="px-6 pt-2 pb-4 mb-3">
+                            <ClassForm
+                                setopenModal={setopenModal}
+                                submitActionBtn={submitActionBtn}
+                            />
+                        </Card>
+                    </Grid>
+                </Grid>
+            )}
         </div>
     )
 }

@@ -16,6 +16,7 @@ import ChildrenTable from 'app/components/tables/ChildrenTable'
 
 import FormModal from 'app/components/CustomizedDialog/FormModal'
 import AddForm from 'app/components/Forms/ChildrenService/AddForm'
+import ImagePreviewComponent from 'app/components/ImagePreview/ImagePreviewComponent'
 
 const data = [
     {
@@ -100,57 +101,72 @@ function ChildrenServicePage() {
                     ]}
                 />
             </div>
-            <Grid container spacing={3}>
-                <Grid item lg={12} md={12} sm={12} xs={12}>
-                    <Card className="px-6 pt-2 pb-4 mb-3">
-                        <Grid container spacing={3}>
-                            <Grid item lg={3} md={3} sm={12} xs={12}>
-                                <div>
-                                    <input
-                                        className="form-control"
-                                        type="text"
-                                        placeholder="Search by firstname"
-                                    />
-                                    <span>
-                                        <IconButton>
-                                            <Icon color="primary">search</Icon>
-                                        </IconButton>
-                                    </span>
-                                </div>
-                            </Grid>
-                            <Grid item lg={7} md={7} sm={12} xs={12}>
-                                <FormModal
-                                    open={openModal}
-                                    title="Add New Member"
-                                    toggleModal={handleClickOpen}
-                                    submitActionBtn={submitActionBtn}
-                                    saveActionHandler={saveActionHandler}
-                                >
-                                    <AddForm
-                                        submitActionBtn={submitActionBtn}
-                                    />
-                                </FormModal>
-                            </Grid>
-                            <Grid item lg={2} md={2} sm={6} xs={12}>
-                                <Button
-                                    style={{ float: 'right' }}
-                                    color="primary"
-                                    variant="contained"
-                                    type="submit"
-                                    onClick={handleClickOpen}
-                                >
-                                    <Icon>person</Icon>
-                                    <span className="pl-2 capitalize">
-                                        Add Member
-                                    </span>
-                                </Button>
-                            </Grid>
-                        </Grid>
+            {openModal ? (
+                <Grid container spacing={3}>
+                    <Grid item lg={12} md={12} sm={12} xs={12}>
+                        <Card className="px-6 pt-2 pb-4 mb-3">
+                            <Grid container spacing={3}>
+                                <Grid item lg={3} md={3} sm={12} xs={12}>
+                                    <div>
+                                        <input
+                                            className="form-control"
+                                            type="text"
+                                            placeholder="Search by firstname"
+                                        />
+                                        <span>
+                                            <IconButton>
+                                                <Icon color="primary">
+                                                    search
+                                                </Icon>
+                                            </IconButton>
+                                        </span>
+                                    </div>
+                                </Grid>
 
-                        <ChildrenTable data={data} />
-                    </Card>
+                                <Grid item lg={2} md={2} sm={6} xs={12}>
+                                    <Button
+                                        style={{ float: 'right' }}
+                                        color="primary"
+                                        variant="contained"
+                                        type="submit"
+                                        onClick={handleClickOpen}
+                                    >
+                                        <Icon>person</Icon>
+                                        <span className="pl-2 capitalize">
+                                            Add Member
+                                        </span>
+                                    </Button>
+                                </Grid>
+                            </Grid>
+
+                            <ChildrenTable data={data} />
+                        </Card>
+                    </Grid>
                 </Grid>
-            </Grid>
+            ) : (
+                <Grid
+                    container
+                    spacing={2}
+                    style={{ width: '70vw', margin: '0 auto' }}
+                >
+                    <Grid item lg={3} xl={3} xs={12} md={3}>
+                        <Card
+                            className="px-6 pt-2 pb-4 mb-3"
+                            style={{ height: '362px' }}
+                        >
+                            <ImagePreviewComponent />
+                        </Card>
+                    </Grid>
+                    <Grid item lg={8} xl={8} xs={12} md={8}>
+                        <Card className="px-6 pt-2 pb-4 mb-3">
+                            <AddForm
+                                setopenModal={setopenModal}
+                                submitActionBtn={submitActionBtn}
+                            />
+                        </Card>
+                    </Grid>
+                </Grid>
+            )}
         </div>
     )
 }

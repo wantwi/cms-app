@@ -6,6 +6,12 @@ export const navigations = [
         path: '/dashboard',
         icon: 'dashboard',
     },
+
+    {
+        name: 'Church Activity',
+        path: '/activity/view',
+        icon: 'event',
+    },
     {
         label: 'Membership',
         type: 'label',
@@ -51,11 +57,11 @@ export const navigations = [
                 iconText: 'SI',
                 path: '/committee/add',
             },
-            {
-                name: 'Committee Members',
-                iconText: 'SU',
-                path: '/committee/members',
-            },
+            // {
+            //     name: 'Committee Members',
+            //     iconText: 'SU',
+            //     path: '/committee/members',
+            // },
         ],
     },
     // {
@@ -104,26 +110,22 @@ export const navigations = [
             },
         ],
     },
-    {
-        label: 'Church Activity',
-        type: 'label',
-    },
-    {
-        name: 'Activity',
-        icon: 'people',
-        children: [
-            {
-                name: 'Add Activity',
-                iconText: 'SI',
-                path: '/activity/add',
-            },
-            {
-                name: 'View Activity',
-                iconText: 'SI',
-                path: '/activity/view',
-            },
-        ],
-    },
+    // {
+    //     label: 'Church Activity',
+    //     type: 'label',
+    // },
+    // {
+    //     name: 'Activity',
+    //     icon: 'event',
+    //     children: [
+           
+    //         {
+    //             name: 'View Activity',
+    //             iconText: 'SI',
+    //             path: '/activity/view',
+    //         },
+    //     ],
+    // },
 
     {
         label: 'Components',

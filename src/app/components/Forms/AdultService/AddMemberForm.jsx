@@ -344,6 +344,7 @@ const AddMemberForm = ({ submitActionBtn,setopenModal }) => {
                     </Grid>
                 </Grid>
 
+                <div style={{marginTop:30}}>
                 <Button
                     onClick={()=>setopenModal(true)}
                     color="primary"
@@ -354,6 +355,17 @@ const AddMemberForm = ({ submitActionBtn,setopenModal }) => {
                     <Icon>save</Icon>
                     <span className="pl-2 capitalize">Submit</span>
                 </Button>
+                <Button
+                    onClick={()=>setopenModal(true)}
+                    color="inherit"
+                    variant="contained"
+                    type="button"
+                    style={{float:"right", marginRight:20}}
+                >
+                    <Icon>cancel</Icon>
+                    <span className="pl-2 capitalize">Cancel</span>
+                </Button>
+                </div>
             </form>
         </div>
     )

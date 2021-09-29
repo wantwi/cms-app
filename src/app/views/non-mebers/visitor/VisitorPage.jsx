@@ -1,30 +1,19 @@
 import React, { useRef, useState } from 'react'
 import { Grid, Card } from '@material-ui/core'
 import { Breadcrumb } from 'app/components'
-import { CLASS_DATA } from './FakeClassData'
+
 import { Icon, Button, IconButton, Fab } from '@material-ui/core'
 
-// import {
-//     Button,
-//     Icon,
-//     Grid,
-//     Radio,
-//     RadioGroup,
-//     FormControlLabel,
-//     Checkbox,
-// } from '@material-ui/core'
 import ClassTable from 'app/components/tables/ClassTable'
 
-import FormModal from 'app/components/CustomizedDialog/FormModal'
-import ClassForm from 'app/components/Forms/ClassForm/ClassForm'
 
-import './ClassPage.css'
+import ClassForm from 'app/components/Forms/ClassForm/ClassForm'
 
 const commands = ({ name }) => {
     console.log(name)
 }
 
-function ClassPage() {
+function VisitorPage() {
     const [openModal, setopenModal] = useState(false)
     const submitActionBtn = useRef(null)
     const handleClickOpen = () => {
@@ -49,16 +38,16 @@ function ClassPage() {
 
             {openModal ? (
                 <Grid container spacing={3}>
-                    <Grid item lg={12} md={12} sm={12} xs={12}>
-                        <Card className="px-6 pt-2 pb-4 mb-3">
-                            <Grid container spacing={3}>
-                                <Grid item lg={4} md={4} sm={12} xs={12}>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <Card className="px-6 pt-2 pb-4 mb-3">
+                        <Grid container spacing={3}>
+                        <Grid item lg={4} md={4} sm={12} xs={12}>
                                     <div>
                                         <input
                                             className="form-control fw-8"
                                             type="text"
                                             placeholder="Search by class name"
-                                            style={{ fontSize: 13 }}
+                                            style={{ fontSize: 13,float:"left", width:'80%' }}
                                         />
                                         <span
                                             style={{
@@ -90,12 +79,12 @@ function ClassPage() {
                                         </span>
                                     </Button>
                                 </Grid>
-                            </Grid>
+                        </Grid>
 
-                            <ClassTable data={[]} />
-                        </Card>
-                    </Grid>
+                        <ClassTable data={[]} />
+                    </Card>
                 </Grid>
+            </Grid>
             ) : (
                 <Grid
                     container
@@ -116,4 +105,7 @@ function ClassPage() {
     )
 }
 
-export default ClassPage
+
+
+
+export default VisitorPage

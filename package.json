@@ -13,6 +13,8 @@
     "@material-ui/pickers": "^3.2.2",
     "@syncfusion/ej2-react-calendars": "^19.2.62",
     "@syncfusion/ej2-react-grids": "^19.2.62",
+    "@syncfusion/ej2-react-navigations": "^19.2.62",
+    "@syncfusion/ej2-react-schedule": "^19.2.60",
     "apexcharts": "^3.20.0",
     "autosuggest-highlight": "^3.1.1",
     "axios": "^0.19.0",

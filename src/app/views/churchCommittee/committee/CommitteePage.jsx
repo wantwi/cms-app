@@ -24,8 +24,8 @@ function CommitteePage() {
             <div className="mb-sm-30">
                 <Breadcrumb
                     routeSegments={[
-                        { name: 'Membership', path: '/members/adult' },
-                        { name: 'Adult Service' },
+                        { name: 'Membership', path: '/committee/add' },
+                        { name: 'Committee' },
                     ]}
                 />
             </div>

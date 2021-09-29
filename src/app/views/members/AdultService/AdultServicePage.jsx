@@ -72,7 +72,7 @@ const commands = ({ name }) => {
 }
 
 function AdultServicePage() {
-    const [openModal, setopenModal] = useState(false)
+    const [openModal, setopenModal] = useState(true)
     const submitActionBtn = useRef(null)
 
     const [state, dispatch] = useAppState()
@@ -105,16 +105,17 @@ function AdultServicePage() {
             {openModal ? (
                 <Grid container spacing={3}>
                     <Grid item lg={12} md={12} sm={12} xs={12}>
-                        <Card className="px-6 pt-2 pb-4 mb-3">
+                        <Card className="px-6 pt-2 pb-4 mb-3" raised>
                             <Grid container spacing={3}>
                                 <Grid item lg={4} md={4} sm={12} xs={12}>
                                     <div>
                                         <input
                                             className="form-control fw-8"
                                             type="text"
-                                            placeholder="Search by firstname"
+                                            placeholder="Search by first name"
+                                            style={{fontSize:13}}
                                         />
-                                        <span style={{ float: 'left' }}>
+                                        <span style={{ float: 'left',marginTop:-5 }}>
                                             <IconButton>
                                                 <Icon color="primary">
                                                     search
@@ -123,6 +124,7 @@ function AdultServicePage() {
                                         </span>
                                     </div>
                                 </Grid>
+                                <Grid item lg={6} md={6} sm={12} xs={12}></Grid>
 
                                 <Grid item lg={2} md={2} sm={6} xs={12}>
                                     <Button
@@ -153,14 +155,15 @@ function AdultServicePage() {
                     <Grid item lg={3} xl={3} xs={12} md={3}>
                         <Card
                             className="px-6 pt-2 pb-4 mb-3"
-                            style={{ height: '362px' }}
+                            style={{ height: '395px' }}
+                            raised
                         >
 
                             <ImagePreviewComponent/>
                         </Card>
                     </Grid>
                     <Grid item lg={8} xl={8} xs={12} md={8}>
-                        <Card className="px-6 pt-2 pb-4 mb-3">
+                        <Card className="px-6 pt-2 pb-4 mb-3" raised>
                             <AddMemberForm    setopenModal={setopenModal} submitActionBtn={submitActionBtn} />
                         </Card>
                     </Grid>

@@ -14,6 +14,8 @@ import membersRoutes from './views/members/MembersRoutes'
 import classRoutes from './views/churchClass/ClassRoutes'
 import churchcommiteeRoutes from './views/churchCommittee/churchcommiteeRoutes'
 import ChurchActivityRoute from './views/actitivity/ChurchActivityRoute'
+import nonMembersRoutes from './views/non-mebers/NonMemberSRoutes'
+
 
 const redirectRoute = [
     {
@@ -35,6 +37,7 @@ const routes = [
     ...classRoutes,
     ...churchcommiteeRoutes,
     ...ChurchActivityRoute,
+    ...nonMembersRoutes,
     ...materialRoutes,
     ...utilitiesRoutes,
     ...chartsRoute,

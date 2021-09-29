@@ -13,6 +13,7 @@ import mapRoutes from './views/map/MapRoutes'
 import membersRoutes from './views/members/MembersRoutes'
 import classRoutes from './views/churchClass/ClassRoutes'
 import churchcommiteeRoutes from './views/churchCommittee/churchcommiteeRoutes'
+import ChurchActivityRoute from './views/actitivity/ChurchActivityRoute'
 
 const redirectRoute = [
     {
@@ -33,6 +34,7 @@ const routes = [
     ...membersRoutes,
     ...classRoutes,
     ...churchcommiteeRoutes,
+    ...ChurchActivityRoute,
     ...materialRoutes,
     ...utilitiesRoutes,
     ...chartsRoute,

@@ -84,6 +84,46 @@ export const navigations = [
     //         },
     //     ],
     // },
+    {
+        label: 'Non Membership',
+        type: 'label',
+    },
+    {
+        name: 'Non Membership',
+        icon: 'people',
+        children: [
+            {
+                name: 'Visitor',
+                iconText: 'SI',
+                path: '/nonmembers/visitor',
+            },
+            {
+                name: 'Transfered Members',
+                iconText: 'SI',
+                path: '/nonmembers/transfer',
+            },
+        ],
+    },
+    {
+        label: 'Church Activity',
+        type: 'label',
+    },
+    {
+        name: 'Activity',
+        icon: 'people',
+        children: [
+            {
+                name: 'Add Activity',
+                iconText: 'SI',
+                path: '/activity/add',
+            },
+            {
+                name: 'View Activity',
+                iconText: 'SI',
+                path: '/activity/view',
+            },
+        ],
+    },
 
     {
         label: 'Components',

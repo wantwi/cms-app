@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState,useEffect } from 'react'
 
 import { Breadcrumb } from 'app/components'
 import Image from '../001-man.svg'
@@ -8,7 +8,10 @@ import CustomTableComponent from 'app/components/tables/CustomTableComponent'
 import './AdultServicePage.css'
 import FormModal from 'app/components/CustomizedDialog/FormModal'
 import AddMemberForm from 'app/components/Forms/AdultService/AddMemberForm'
-import { useAppState } from '../../../../stateManager/AppStateProvider'
+
+import {getMemberInfo,getMemberById,toggleForm} from "../../../redux/adultService/AdultServiceActions"
+import { useDispatch, useSelector } from 'react-redux'
+
 import ImagePreviewComponent from '../../../components/ImagePreview/ImagePreviewComponent'
 const data = [
     {
@@ -67,29 +70,44 @@ const data = [
     },
 ]
 
-const commands = ({ name }) => {
-    console.log(name)
-}
+
 
 function AdultServicePage() {
-    const [openModal, setopenModal] = useState(true)
-    const submitActionBtn = useRef(null)
+    const dispatch = useDispatch()
 
-    const [state, dispatch] = useAppState()
+   
 
-    console.log({ state })
+    const {membersInfo,hideForm} = useSelector((state) => state.adultService)
 
-    console.log({ dispatch })
+   
 
     const handleClickOpen = () => {
-        setopenModal(!openModal)
+        dispatch(toggleForm())
     }
 
-    const saveActionHandler = () => {
-        submitActionBtn.current.click()
-        console.log({ submitActionBtn })
+   
+
+    
+        
+    
+  
+    
+
+  
        
-    }
+        useEffect(() => {
+
+         
+            dispatch(getMemberInfo())
+
+           
+           
+        }, [])
+
+
+      
+  
+
 
     return (
         <div className=" m-sm-30 mt-6">
@@ -102,7 +120,7 @@ function AdultServicePage() {
                 />
             </div>
 
-            {openModal ? (
+            {hideForm ? (
                 <Grid container spacing={3}>
                     <Grid item lg={12} md={12} sm={12} xs={12}>
                         <Card className="px-6 pt-2 pb-4 mb-3" raised>
@@ -142,7 +160,7 @@ function AdultServicePage() {
                                 </Grid>
                             </Grid>
 
-                            <CustomTableComponent data={data} />
+                            <CustomTableComponent data={membersInfo} />
                         </Card>
                     </Grid>
                 </Grid>
@@ -164,7 +182,7 @@ function AdultServicePage() {
                     </Grid>
                     <Grid item lg={8} xl={8} xs={12} md={8}>
                         <Card className="px-6 pt-2 pb-4 mb-3" raised>
-                            <AddMemberForm    setopenModal={setopenModal} submitActionBtn={submitActionBtn} />
+                            <AddMemberForm  />
                         </Card>
                     </Grid>
                 </Grid>

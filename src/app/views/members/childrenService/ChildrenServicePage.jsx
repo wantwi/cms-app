@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState,useEffect } from 'react'
 import { Grid, Card } from '@material-ui/core'
 import { Breadcrumb } from 'app/components'
 import Image from '../001-man.svg'
@@ -17,7 +17,8 @@ import ChildrenTable from 'app/components/tables/ChildrenTable'
 import FormModal from 'app/components/CustomizedDialog/FormModal'
 import AddForm from 'app/components/Forms/ChildrenService/AddForm'
 import ImagePreviewComponent from 'app/components/ImagePreview/ImagePreviewComponent'
-
+import { useDispatch, useSelector } from 'react-redux'
+import {getChildById,getChildrenInfo,toggleForm} from "../../../redux/childrenService/ChildrenServiceAction"
 const data = [
     {
         image: Image,
@@ -75,21 +76,22 @@ const data = [
     },
 ]
 
-const commands = ({ name }) => {
-    console.log(name)
-}
+
 
 function ChildrenServicePage() {
-    const [openModal, setopenModal] = useState(true)
-    const submitActionBtn = useRef(null)
-    const handleClickOpen = () => {
-        setopenModal(!openModal)
-    }
+    const dispatch = useDispatch()
 
-    const saveActionHandler = () => {
-        submitActionBtn.current.click()
-        console.log({ submitActionBtn })
-    }
+    const {childrenInfo,hideForm} = useSelector((state) => state.childrenService)
+
+    console.log({childrenInfo});
+
+   
+
+    useEffect(() => {
+    
+       dispatch(getChildrenInfo())
+    }, [])
+
 
     return (
         <div className=" m-sm-30 mt-6">
@@ -101,7 +103,7 @@ function ChildrenServicePage() {
                     ]}
                 />
             </div>
-            {openModal ? (
+            {hideForm ? (
                 <Grid container spacing={3}>
                     <Grid item lg={12} md={12} sm={12} xs={12}>
                         <Card className="px-6 pt-2 pb-4 mb-3" raised>
@@ -131,7 +133,7 @@ function ChildrenServicePage() {
                                         color="primary"
                                         variant="contained"
                                         type="submit"
-                                        onClick={handleClickOpen}
+                                        onClick={()=> dispatch(toggleForm())}
                                     >
                                         <Icon>person</Icon>
                                         <span className="pl-2 capitalize">
@@ -162,10 +164,7 @@ function ChildrenServicePage() {
                     </Grid>
                     <Grid item lg={8} xl={8} xs={12} md={8}>
                         <Card className="px-6 pt-2 pb-4 mb-3" raised>
-                            <AddForm
-                                setopenModal={setopenModal}
-                                submitActionBtn={submitActionBtn}
-                            />
+                            <AddForm/>
                         </Card>
                     </Grid>
                 </Grid>

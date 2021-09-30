@@ -13,8 +13,18 @@ import {
 } from '@syncfusion/ej2-react-grids'
 import { Icon, Button, IconButton, Fab } from '@material-ui/core'
 
+import {getMemberById,toggleForm} from "../../redux/adultService/AdultServiceActions"
+import { useDispatch, useSelector } from 'react-redux'
+
 function CustomTableComponent({ data }) {
+    const dispatch = useDispatch()
     const grid = useRef(null)
+
+
+    const {memberInfo} = useSelector((state) => state.adultService)
+
+    console.log({memberInfo});
+
 
     const toolbarClick = (args) => {
         console.log({ grid })
@@ -28,16 +38,15 @@ function CustomTableComponent({ data }) {
         }
     }
 
-    const commands = ({ name }) => {
-        console.log(name)
-
+    const commands = ({ id }) => {
+      
         return (
             <>
                 <IconButton
-                    id={name.replace(' ', '')}
-                    onClick={() => editEventListener(name)}
+                    id={id}
+                    onClick={() => editEventListener(id)}
                 >
-                    <Icon color="info">edit</Icon>
+                    <Icon>edit</Icon>
                 </IconButton>
                 <IconButton>
                     <Icon color="error">delete</Icon>
@@ -50,7 +59,10 @@ function CustomTableComponent({ data }) {
     }
 
     const editEventListener = (id) => {
-        alert(id)
+
+        
+        dispatch(getMemberById(id))
+       // dispatch(toggleForm())
     }
 
     const ImageTemplate = ({ image }) => {
@@ -98,7 +110,7 @@ function CustomTableComponent({ data }) {
                 />
                 <ColumnDirective
                     headerText="Phone Number"
-                    field="phoneNumber"
+                    field="phone"
                     width="100"
                     format="C2"
                 />
@@ -106,7 +118,7 @@ function CustomTableComponent({ data }) {
                     headerText="Action"
                     width="100"
                     template={commands}
-                    field="name"
+                    field="id"
                 />
             </ColumnsDirective>
             <Inject services={[Page, Toolbar, ExcelExport, PdfExport, Group]} />

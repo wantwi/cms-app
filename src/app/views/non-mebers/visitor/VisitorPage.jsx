@@ -8,13 +8,14 @@ import ClassTable from 'app/components/tables/ClassTable'
 
 
 import ClassForm from 'app/components/Forms/ClassForm/ClassForm'
+import VisitorForm from 'app/components/Forms/visitor/VisitorForm'
 
 const commands = ({ name }) => {
     console.log(name)
 }
 
 function VisitorPage() {
-    const [openModal, setopenModal] = useState(false)
+    const [openModal, setopenModal] = useState(true)
     const submitActionBtn = useRef(null)
     const handleClickOpen = () => {
         setopenModal(!openModal)
@@ -93,7 +94,7 @@ function VisitorPage() {
                 >
                     <Grid item lg={12} xl={12} xs={12} md={12}>
                         <Card raised className="px-6 pt-2 pb-4 mb-3">
-                            <ClassForm
+                            <VisitorForm
                                 setopenModal={setopenModal}
                                 submitActionBtn={submitActionBtn}
                             />

@@ -19,6 +19,9 @@ import DateFnsUtils from '@date-io/date-fns'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 
+import { useDispatch, useSelector } from 'react-redux'
+import {getMemberInfo,getMemberById,toggleForm} from "../../../redux/adultService/AdultServiceActions"
+
 
 const INITIAL_MEMBER_FROM = {
     firstName: '',
@@ -44,7 +47,13 @@ let schema = yup.object().shape({
     mobile: yup.number(),
 })
 
-const AddMemberForm = ({ submitActionBtn,setopenModal }) => {
+const AddMemberForm = () => {
+     const dispatch = useDispatch()
+
+    const {memberInfo,hideForm} = useSelector((state) => state.adultService)
+ 
+
+   
     const [date, setDate] = useState(INITIAL_MEMBER_FROM.date)
 
     const [orgs, setOrgs] = React.useState(INITIAL_MEMBER_FROM.organisation)
@@ -64,7 +73,7 @@ const AddMemberForm = ({ submitActionBtn,setopenModal }) => {
     }
 
     const formik = useFormik({
-        initialValues: INITIAL_MEMBER_FROM,
+        initialValues: memberInfo,
         validationSchema: schema,
         onSubmit: (values) => {
             values.organisation = orgs
@@ -346,7 +355,7 @@ const AddMemberForm = ({ submitActionBtn,setopenModal }) => {
 
                 <div style={{marginTop:30}}>
                 <Button
-                    onClick={()=>setopenModal(true)}
+                   
                     color="primary"
                     variant="contained"
                     type="submit"
@@ -356,7 +365,7 @@ const AddMemberForm = ({ submitActionBtn,setopenModal }) => {
                     <span className="pl-2 capitalize">Submit</span>
                 </Button>
                 <Button
-                    onClick={()=>setopenModal(true)}
+                    onClick={()=>  dispatch(toggleForm())}
                     color="inherit"
                     variant="contained"
                     type="button"

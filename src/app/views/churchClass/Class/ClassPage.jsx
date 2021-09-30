@@ -25,7 +25,7 @@ const commands = ({ name }) => {
 }
 
 function ClassPage() {
-    const [openModal, setopenModal] = useState(false)
+    const [openModal, setopenModal] = useState(true)
     const submitActionBtn = useRef(null)
     const handleClickOpen = () => {
         setopenModal(!openModal)

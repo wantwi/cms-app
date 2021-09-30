@@ -18,7 +18,7 @@ import './App.css'
 const App = () => {
     console.log({ initialState })
     return (
-        <AppStateProvider reducer={appReducers} initialState={initialState}>
+       
             <AppContext.Provider value={{ routes }}>
                 <Provider store={Store}>
                     <SettingsProvider>
@@ -55,7 +55,7 @@ const App = () => {
                     </SettingsProvider>
                 </Provider>
             </AppContext.Provider>
-        </AppStateProvider>
+
     )
 }
 

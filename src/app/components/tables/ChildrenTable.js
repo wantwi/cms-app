@@ -12,9 +12,15 @@ import {
     Group,
 } from '@syncfusion/ej2-react-grids'
 import { Icon, Button, IconButton, Fab } from '@material-ui/core'
+import {useDispatch,useSelector} from "react-redux"
+import {getChildById,getChildrenInfo} from "../../redux/childrenService/ChildrenServiceAction"
 
 function ChildrenTable({ data }) {
     const grid = useRef(null)
+
+    const dispatch = useDispatch()
+
+    const {childrenInfo} = useSelector(state => state.childrenService)
 
     const toolbarClick = (args) => {
         console.log({ grid })
@@ -28,12 +34,12 @@ function ChildrenTable({ data }) {
         }
     }
 
-    const commands = ({ name }) => {
+    const commands = ({ id }) => {
         return (
             <>
                 <IconButton
-                    id={name.replace(' ', '')}
-                    onClick={() => editEventListener(name)}
+                    id={id}
+                    onClick={() => editEventListener(id)}
                 >
                     <Icon>edit</Icon>
                 </IconButton>
@@ -48,7 +54,8 @@ function ChildrenTable({ data }) {
     }
 
     const editEventListener = (id) => {
-        alert(id)
+        
+        dispatch(getChildById(id))
     }
 
     const ImageTemplate = ({ image }) => {
@@ -70,7 +77,7 @@ function ChildrenTable({ data }) {
 
     return (
         <GridComponent
-            dataSource={data}
+            dataSource={childrenInfo}
             allowPaging={true}
             height={365}
             pageSettings={{ pageCount: 5, pageSizes: true }}
@@ -100,7 +107,7 @@ function ChildrenTable({ data }) {
                     headerText="Action"
                     width="100"
                     template={commands}
-                    field="name"
+                    field="id"
                 />
             </ColumnsDirective>
             <Inject services={[Page, Toolbar, ExcelExport, PdfExport, Group]} />

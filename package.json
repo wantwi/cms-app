@@ -59,6 +59,7 @@
     "react-vis": "^1.11.7",
     "recharts": "^1.6.2",
     "redux": "^4.0.1",
+    "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "shortid": "^2.2.14",
     "swiper": "^4.5.0",

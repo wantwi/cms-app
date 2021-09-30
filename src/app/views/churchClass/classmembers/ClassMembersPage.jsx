@@ -14,18 +14,26 @@ function ClassMembersPage() {
                     ]}
                 />
             </div>
-            <Card style={{ padding: '25px' }}>
+           
                 <Grid container spacing={3}>
+               
                     <Grid item lg={5} md={5} sm={12} xs={12}>
-                        <ClassesTable
+                    <Card style={{ padding: '25px' }} raised>
+                    <ClassesTable
                             data={[{ className: 'Love CLass', members: 48 }]}
                         />
+
+                    </Card>
+                        
                     </Grid>
                     <Grid item lg={7} md={7} sm={12} xs={12}>
-                        <ClassMembersTable data={[]} />
+                    <Card style={{ padding: '25px' }} raised>
+                    <ClassMembersTable data={[]} />
+                    </Card>
+                       
                     </Grid>
                 </Grid>
-            </Card>
+            
         </div>
     )
 }

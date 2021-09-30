@@ -1,9 +1,12 @@
 import thunk from 'redux-thunk'
 import { createStore, applyMiddleware, compose } from 'redux'
+import logger from 'redux-logger'
 import RootReducer from './reducers/RootReducer'
 
-const initialState = {}
-const middlewares = [thunk]
+const initialState = {
+  
+}
+const middlewares = [thunk,logger]
 let devtools = (x) => x
 
 if (

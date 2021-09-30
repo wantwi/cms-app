@@ -19,6 +19,9 @@ import DateFnsUtils from '@date-io/date-fns'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 
+import {getMemberInfo,getMemberById,toggleForm} from "../../../redux/childrenService/ChildrenServiceAction"
+import { useDispatch, useSelector } from 'react-redux'
+
 const INITIAL_MEMBER_FROM = {
     firstName: '',
     lastName: '',
@@ -43,7 +46,10 @@ let schema = yup.object().shape({
     mobile: yup.number(),
 })
 
-const AddForm = ({ submitActionBtn,setopenModal }) => {
+const AddForm = () => {
+
+    const dispatch = useDispatch()
+
     const [date, setDate] = useState(INITIAL_MEMBER_FROM.date)
 
     const [orgs, setOrgs] = React.useState(INITIAL_MEMBER_FROM.organisation)
@@ -337,7 +343,7 @@ const AddForm = ({ submitActionBtn,setopenModal }) => {
 
                 <div style={{marginTop:30}}>
                 <Button
-                    onClick={()=>setopenModal(true)}
+                    
                     color="primary"
                     variant="contained"
                     type="submit"
@@ -347,7 +353,7 @@ const AddForm = ({ submitActionBtn,setopenModal }) => {
                     <span className="pl-2 capitalize">Submit</span>
                 </Button>
                 <Button
-                    onClick={()=>setopenModal(true)}
+                    onClick={()=>dispatch(toggleForm())}
                     color="inherit"
                     variant="contained"
                     type="button"

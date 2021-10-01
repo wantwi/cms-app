@@ -110,6 +110,27 @@ export const navigations = [
             },
         ],
     },
+     {
+        label: 'Operation',
+        type: 'label',
+    },
+    {
+        name: 'Attendance',
+        icon: 'list',
+        children: [
+            {
+                name: 'Church Operation',
+                iconText: 'SI',
+                path: '/attendance/operation',
+            },
+            {
+                name: 'View Operation',
+                iconText: 'eye',
+                path: '/attendance/view',
+            },
+           
+        ],
+    },
     // {
     //     label: 'Church Activity',
     //     type: 'label',

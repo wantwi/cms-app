@@ -46,6 +46,11 @@ export const navigations = [
                 iconText: 'SU',
                 path: '/class/members',
             },
+            {
+                name: 'Children Service Class',
+                iconText: 'SU',
+                path: '/class/children',
+            },
         ],
     },
     {

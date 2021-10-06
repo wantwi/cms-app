@@ -10,6 +10,10 @@ const classRoutes = [
         path: '/class/members',
         component: React.lazy(() => import('./classmembers/ClassMembersPage')),
     },
+    {
+        path: '/class/children',
+        component: React.lazy(() => import('./childrenClass/ChildrenClassPage')),
+    },
 ]
 
 export default classRoutes

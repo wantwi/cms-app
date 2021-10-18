@@ -13,18 +13,19 @@ import {
 } from '@syncfusion/ej2-react-grids'
 import { Icon, Button, IconButton, Fab } from '@material-ui/core'
 
-import {getMemberById,toggleForm} from "../../redux/adultService/AdultServiceActions"
+import {
+    getMemberById,
+    toggleForm,
+} from '../../redux/adultService/AdultServiceActions'
 import { useDispatch, useSelector } from 'react-redux'
 
 function CustomTableComponent({ data }) {
     const dispatch = useDispatch()
     const grid = useRef(null)
 
+    const { memberInfo } = useSelector((state) => state.adultService)
 
-    const {memberInfo} = useSelector((state) => state.adultService)
-
-    console.log({memberInfo});
-
+    console.log({ memberInfo })
 
     const toolbarClick = (args) => {
         console.log({ grid })
@@ -38,14 +39,10 @@ function CustomTableComponent({ data }) {
         }
     }
 
-    const commands = ({ id }) => {
-      
+    const commands = ({ _id }) => {
         return (
             <>
-                <IconButton
-                    id={id}
-                    onClick={() => editEventListener(id)}
-                >
+                <IconButton id={_id} onClick={() => editEventListener(_id)}>
                     <Icon>edit</Icon>
                 </IconButton>
                 <IconButton>
@@ -58,11 +55,20 @@ function CustomTableComponent({ data }) {
         )
     }
 
-    const editEventListener = (id) => {
+    const statusTemplate = ({ status }) => {
+        return status === 1 ? (
+            <Button variant="contained"  style={{background:"#0cc143", margin:0, padding:"5px 10px",width:100, color:"#fff"}}>
+                Active
+            </Button>
+        ) : (
+            <Button variant="contained" color="error">Inactive</Button>
+        )
+    }
 
+    const editEventListener = (id) => {
         
         dispatch(getMemberById(id))
-       // dispatch(toggleForm())
+        // dispatch(toggleForm())
     }
 
     const ImageTemplate = ({ image }) => {
@@ -95,30 +101,42 @@ function CustomTableComponent({ data }) {
             ref={grid}
         >
             <ColumnsDirective>
-                <ColumnDirective
+                {/* <ColumnDirective
                     headerText="Member Image"
                     template={ImageTemplate}
                     field="image"
                     width="70"
                     textAlign="Center"
+                /> */}
+                <ColumnDirective headerText="ID" field="_id" width="120" />
+                <ColumnDirective
+                    headerText="Name"
+                    field="firstName"
+                    width="100"
                 />
-                <ColumnDirective headerText="Name" field="name" width="100" />
+                <ColumnDirective headerText="Role" field="role" width="100" />
                 <ColumnDirective
                     headerText="Class Leader"
-                    field="classLeader"
+                    field="lastName"
                     width="100"
                 />
                 <ColumnDirective
                     headerText="Phone Number"
-                    field="phone"
+                    field="mobileNumber"
                     width="100"
                     format="C2"
+                />
+                <ColumnDirective
+                    headerText="Status"
+                    field="status"
+                    width="100"
+                    template={statusTemplate}
                 />
                 <ColumnDirective
                     headerText="Action"
                     width="100"
                     template={commands}
-                    field="id"
+                    field="_id"
                 />
             </ColumnsDirective>
             <Inject services={[Page, Toolbar, ExcelExport, PdfExport, Group]} />

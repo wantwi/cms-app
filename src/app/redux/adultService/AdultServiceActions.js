@@ -18,7 +18,7 @@ export const ActionTypes = {
 export const getMemberInfo =  () => async  (dispatch) => {
 
     try {
-        const request = await axios.get('https://jsonplaceholder.typicode.com/users')
+        const request = await axios.get('http://localhost:4500/api/members')
         if(!request) return
         dispatch({
             type:ActionTypes.GET_MEMBER_INFO,
@@ -38,7 +38,7 @@ export const toggleForm =()=> (dispatch)=>{
 export const getMemberById =  (id) => async  (dispatch) => {
 
     try {
-        const request = await axios.get(`https://jsonplaceholder.typicode.com/users/${id}`)
+        const request = await axios.get(`http://localhost:4500/api/members/${id}`)
         if(!request) return
         dispatch({
             type:ActionTypes.GET_MEMRBER_BY_ID,

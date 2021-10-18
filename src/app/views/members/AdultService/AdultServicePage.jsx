@@ -2,7 +2,7 @@ import React, { useRef, useState,useEffect } from 'react'
 
 import { Breadcrumb } from 'app/components'
 import Image from '../001-man.svg'
-import { Icon, Button, IconButton, Fab,Grid, Card } from '@material-ui/core'
+import { Icon, Button, IconButton, Fab,Grid, Card  } from '@material-ui/core'
 
 import CustomTableComponent from 'app/components/tables/CustomTableComponent'
 import './AdultServicePage.css'
@@ -173,7 +173,7 @@ function AdultServicePage() {
                     <Grid item lg={3} xl={3} xs={12} md={3}>
                         <Card
                             className="px-6 pt-2 pb-4 mb-3"
-                            style={{ height: '395px' }}
+                            style={{ height: '500px' }}
                             raised
                         >
 

@@ -1,5 +1,6 @@
 import '../fake-db'
 import React from 'react'
+import {QueryClientProvider, QueryClient} from "react-query"
 import { Provider } from 'react-redux'
 import { Router, Switch, Route, BrowserRouter } from 'react-router-dom'
 import AppContext from './contexts/AppContext'
@@ -15,10 +16,14 @@ import appReducers from '../stateManager/AppReducers'
 import { initialState } from '../stateManager/initialState'
 import { AppStateProvider } from '../stateManager/AppStateProvider'
 import './App.css'
+
+
+const queryClient = new QueryClient()
 const App = () => {
     console.log({ initialState })
     return (
        
+        <QueryClientProvider client ={queryClient} >
             <AppContext.Provider value={{ routes }}>
                 <Provider store={Store}>
                     <SettingsProvider>
@@ -55,6 +60,7 @@ const App = () => {
                     </SettingsProvider>
                 </Provider>
             </AppContext.Provider>
+            </QueryClientProvider>
 
     )
 }

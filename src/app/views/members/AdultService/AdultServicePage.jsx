@@ -1,4 +1,5 @@
 import React, { useRef, useState,useEffect } from 'react'
+import { useQuery } from 'react-query'
 
 import { Breadcrumb } from 'app/components'
 import Image from '../001-man.svg'
@@ -75,8 +76,6 @@ const data = [
 function AdultServicePage() {
     const dispatch = useDispatch()
 
-   
-
     const {membersInfo,hideForm} = useSelector((state) => state.adultService)
 
    
@@ -84,16 +83,6 @@ function AdultServicePage() {
     const handleClickOpen = () => {
         dispatch(toggleForm())
     }
-
-   
-
-    
-        
-    
-  
-    
-
-  
        
         useEffect(() => {
 
@@ -173,7 +162,7 @@ function AdultServicePage() {
                     <Grid item lg={3} xl={3} xs={12} md={3}>
                         <Card
                             className="px-6 pt-2 pb-4 mb-3"
-                            style={{ height: '500px' }}
+                            style={{ height: '585px' }}
                             raised
                         >
 

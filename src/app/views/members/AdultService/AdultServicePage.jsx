@@ -10,7 +10,7 @@ import './AdultServicePage.css'
 import FormModal from 'app/components/CustomizedDialog/FormModal'
 import AddMemberForm from 'app/components/Forms/AdultService/AddMemberForm'
 
-import {getMemberInfo,getMemberById,toggleForm} from "../../../redux/adultService/AdultServiceActions"
+import {getMemberInfo,resetMemberInfo,toggleForm,getMemberByQueryType} from "../../../redux/adultService/AdultServiceActions"
 import { useDispatch, useSelector } from 'react-redux'
 
 import ImagePreviewComponent from '../../../components/ImagePreview/ImagePreviewComponent'
@@ -75,12 +75,25 @@ const data = [
 
 function AdultServicePage() {
     const dispatch = useDispatch()
+    const [queryValue, setqueryValue] = useState("")
 
     const {membersInfo,hideForm} = useSelector((state) => state.adultService)
 
    
+    const handlefindMemberByQuery =(queryType)=>{
+
+            dispatch(getMemberByQueryType(queryType,queryValue))
+
+    }
+
+    const handleChange =(event)=>{
+
+        setqueryValue(event.target.value)
+
+    }
 
     const handleClickOpen = () => {
+        dispatch(resetMemberInfo())
         dispatch(toggleForm())
     }
        
@@ -121,9 +134,11 @@ function AdultServicePage() {
                                             type="text"
                                             placeholder="Search by first name"
                                             style={{fontSize:13}}
+                                            name="search"
+                                            onChange={handleChange}
                                         />
                                         <span style={{ float: 'left',marginTop:-5 }}>
-                                            <IconButton>
+                                            <IconButton onClick={() =>handlefindMemberByQuery('firstName')}>
                                                 <Icon color="primary">
                                                     search
                                                 </Icon>

@@ -85,18 +85,23 @@ export const AuthProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState)
 
     const login = async (email, password) => {
-        const response = await axios.post('/api/auth/login', {
+        const response = await axios.post('http://localhost:6200/api-v1/login', {
             email,
             password,
         })
-        const { accessToken, user } = response.data
+
+
+      
+        const { token: accessToken } = response.data
+
+        const decodedToken = jwtDecode(accessToken)
 
         setSession(accessToken)
 
         dispatch({
             type: 'LOGIN',
             payload: {
-                user,
+                user:decodedToken?.name,
             },
         })
     }
@@ -132,14 +137,16 @@ export const AuthProvider = ({ children }) => {
 
                 if (accessToken && isValidToken(accessToken)) {
                     setSession(accessToken)
-                    const response = await axios.get('/api/auth/profile')
-                    const { user } = response.data
+                    // const response = await axios.get('/api/auth/profile')
+                    // const { user } = response.data
+
+                    const decodedToken = jwtDecode(accessToken)
 
                     dispatch({
                         type: 'INIT',
                         payload: {
                             isAuthenticated: true,
-                            user,
+                            user:decodedToken?.name,
                         },
                     })
                 } else {

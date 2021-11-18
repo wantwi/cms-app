@@ -10,8 +10,7 @@ import {
     MenuItem,
     Select,
     Switch,
-    InputAdornment
-   
+    InputAdornment,
 } from '@material-ui/core'
 import {
     MuiPickersUtilsProvider,
@@ -21,46 +20,51 @@ import 'date-fns'
 import DateFnsUtils from '@date-io/date-fns'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
-import * as FcIcons from 'react-icons/fc';
-import * as MdIcons from 'react-icons/md';
-import * as FaIcons from 'react-icons/fa';
-import * as GoIcons from 'react-icons/go';
-import * as BsIcons from  'react-icons/bs';
+import * as FcIcons from 'react-icons/fc'
+import * as MdIcons from 'react-icons/md'
+import * as FaIcons from 'react-icons/fa'
+import * as GoIcons from 'react-icons/go'
+import * as BsIcons from 'react-icons/bs'
 
 import { useDispatch, useSelector } from 'react-redux'
 import {
     getMemberInfo,
-    getMemberById,
+    registerMember,
+    updateMember,
     toggleForm,
 } from '../../../redux/adultService/AdultServiceActions'
 
-const INITIAL_MEMBER_FROM = {
-    firstName: '',
-    lastName: '',
-    mobile: '',
-    gender: '',
-    date: new Date(),
-    others: '',
-    birthDate: '',
-    mirritalStatus: '',
-    occupation: '',
-    location: '',
-    emContact: '',
-    contactName: '',
-    memberRole: '',
-    classLeader: '',
-    status: '',
-    membershipStatus:'',
-    relation:'',
-    organisation: [],
-}
+// const INITIAL_MEMBER_FROM = {
+//     firstName: '',
+//     lastName: '',
+//     mobileNumber: '',
+//     gender: '',
+//     date: new Date(),
+//     others: '',
+//     birthDate: '',
+//     marritalStatus: '',
+//     occupation: '',
+//     location: '',
+//     emergencyContact: '',
+//     emergencyContactName: '',
+//     memberRole: [],
+//     classLeader: '',
+//     status: '',
+//     memberStatus: '',
+//     relation: '',
+//     organisation: [],
+// }
 
 let schema = yup.object().shape({
     firstName: yup.string().required('First name is required'),
     lastName: yup.string().required('Last name is required'),
     gender: yup.string().required('Gender is required'),
-    date: yup.date().required(),
-    mobile: yup.number(),
+    //birthDate: yup.date().required('This field is required')
+    mobileNumber: yup.number().required('This field is required'),
+    // birthDate: yup.date().required('This field is required'),
+     emergencyContact: yup.string().required('This field is required'),
+     emergencyContactName: yup.string().required('This field is required'),
+    //birthDate: yup.date().required('This field is required'),
     memberRole: yup.string(),
 })
 
@@ -69,15 +73,21 @@ const AddMemberForm = () => {
 
     const { memberInfo, hideForm } = useSelector((state) => state.adultService)
 
-    const [date, setDate] = useState(INITIAL_MEMBER_FROM.date)
+    const [date, setDate] = useState(memberInfo.date)
 
-    const [orgs, setOrgs] = React.useState(INITIAL_MEMBER_FROM.organisation)
+    const [orgs, setOrgs] = React.useState(memberInfo.organisation)
 
-    const handleMultiChange = (event) => {
+    const [isUpdate, setisUpdate] = useState(false)
+    
+    const [mRole, setMRole] = useState([])
+    const [active, setActive] = useState(true)
+  
+
+    const handleMultiChange = (event,setFunc) => {
         const {
             target: { value },
         } = event
-        setOrgs(
+        setFunc(
             // On autofill we get a the stringified value.
             typeof value === 'string' ? value.split(',') : value
         )
@@ -91,14 +101,41 @@ const AddMemberForm = () => {
         initialValues: memberInfo,
         validationSchema: schema,
         onSubmit: (values) => {
+            //  alert(values)
+            values.birthDate = date
             values.organisation = orgs
-            console.log(JSON.stringify(values, null, 2))
+            values.memberRole = mRole
+
+            {
+                active?values.status = 1 : values.status = 0
+            }
+
+            {
+                !isUpdate ?  dispatch(registerMember(values)) :  dispatch(updateMember(memberInfo._id, values))
+            }
+           
+
+           // console.log(JSON.stringify(values, null, 2))
         },
     })
 
- 
-        console.log(formik.handleChange);
- 
+    useEffect(() => {
+        if(memberInfo?.organisation.length >0 && memberInfo?.memberRole.length >0 ){
+            setOrgs(memberInfo?.organisation)
+            setDate(memberInfo?.birthDate)
+            setMRole(memberInfo?.memberRole)
+
+            memberInfo.status == 1 ?setActive(true) : setActive(false)
+
+            setisUpdate(true)
+           }else{
+
+            setisUpdate(false)
+
+           }
+        
+    }, [memberInfo])
+
     return (
         <div>
             <form onSubmit={formik.handleSubmit}>
@@ -109,15 +146,15 @@ const AddMemberForm = () => {
                             label="First Name"
                             type="text"
                             name="firstName"
-                            // InputProps={{
-                            //     startAdornment: (
-                            //         <InputAdornment position="start">
-                            //             <FaIcons.FaUser />
-                            //         </InputAdornment>
-                            //     ),
-                            // }}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <FaIcons.FaUser />
+                                    </InputAdornment>
+                                ),
+                            }}
                             onChange={formik.handleChange}
-                            value={formik.values.firstName||''}
+                            value={formik.values?.firstName || ''}
                             error={
                                 formik.touched.firstName &&
                                 Boolean(formik.errors.firstName)
@@ -136,15 +173,15 @@ const AddMemberForm = () => {
                             label="Last Name"
                             type="text"
                             name="lastName"
-                            // InputProps={{
-                            //     startAdornment: (
-                            //         <InputAdornment position="start">
-                            //             <FaIcons.FaUser />
-                            //         </InputAdornment>
-                            //     ),
-                            // }}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <FaIcons.FaUser />
+                                    </InputAdornment>
+                                ),
+                            }}
                             onChange={formik.handleChange}
-                            value={formik.values.lastName}
+                            value={formik.values.lastName || ''}
                             error={
                                 formik.touched.lastName &&
                                 Boolean(formik.errors.lastName)
@@ -162,16 +199,15 @@ const AddMemberForm = () => {
                             type="text"
                             name="others"
                             size="small"
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <FaIcons.FaUser />
+                                    </InputAdornment>
+                                ),
+                            }}
                             onChange={formik.handleChange}
-                            
-                            // InputProps={{
-                            //     startAdornment: (
-                            //         <InputAdornment position="start">
-                            //             <FaIcons.FaUser />
-                            //         </InputAdornment>
-                            //     ),
-                            // }}
-                            value={formik.values.others}
+                            value={formik.values.others || ''}
                             error={
                                 formik.touched.others &&
                                 Boolean(formik.errors.others)
@@ -182,12 +218,11 @@ const AddMemberForm = () => {
                         />
                     </Grid>
                 </Grid>
-
                 <Grid container spacing={6}>
                     <Grid item lg={4} md={4} sm={4} xs={12}>
                         <FormControl fullWidth>
                             <InputLabel id="demo-simple-select-label">
-                            <FaIcons.FaTransgender /> Gender
+                                <FaIcons.FaTransgender /> Gender
                             </InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"
@@ -195,15 +230,8 @@ const AddMemberForm = () => {
                                 size="small"
                                 label="Gender"
                                 name="gender"
-                                // InputProps={{
-                                //     startAdornment: (
-                                //         <InputAdornment position="start">
-                                //             <BsIcons.BsGenderAmbiguous />
-                                //         </InputAdornment>
-                                //     ),
-                                // }}
                                 onChange={formik.handleChange}
-                                value={formik.values.gender}
+                                value={formik.values?.gender || ''}
                                 error={
                                     formik.touched.gender &&
                                     Boolean(formik.errors.gender)
@@ -213,7 +241,6 @@ const AddMemberForm = () => {
                                     formik.errors.gender
                                 }
                             >
-                               
                                 <MenuItem value="Male">Male</MenuItem>
                                 <MenuItem value="Female">Female</MenuItem>
                             </Select>
@@ -235,38 +262,29 @@ const AddMemberForm = () => {
                                 KeyboardButtonProps={{
                                     'aria-label': 'change date',
                                 }}
-                                // value={formik.values.birthDate}
-                                // error={
-                                //     formik.touched.birthDate &&
-                                //     Boolean(formik.errors.birthDate)
-                                // }
-                                // helpertext={
-                                //     formik.touched.gender &&
-                                //     formik.errors.gender
-                                // }
                             />
                         </MuiPickersUtilsProvider>
                     </Grid>
                     <Grid item lg={4} md={4} sm={4} xs={12}>
                         <FormControl fullWidth>
                             <InputLabel id="demo-simple-select-label">
-                            <FaIcons.FaCircle /> Marrital Status
+                                <FaIcons.FaCircle /> Marrital Status
                             </InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
                                 size="small"
                                 label="Marrital Status"
-                                name="mirritalStatus"
+                                name="marritalStatus"
                                 onChange={formik.handleChange}
-                                value={formik.values.mirritalStatus}
+                                value={formik.values?.marritalStatus || ''}
                                 error={
-                                    formik.touched.mirritalStatus &&
-                                    Boolean(formik.errors.mirritalStatus)
+                                    formik.touched.marritalStatus &&
+                                    Boolean(formik.errors.marritalStatus)
                                 }
                                 helpertext={
-                                    formik.touched.mirritalStatus &&
-                                    formik.errors.mirritalStatus
+                                    formik.touched.marritalStatus &&
+                                    formik.errors.marritalStatus
                                 }
                             >
                                 <MenuItem value="Single">Single</MenuItem>
@@ -278,7 +296,6 @@ const AddMemberForm = () => {
                         </FormControl>
                     </Grid>
                 </Grid>
-
                 <Grid container spacing={6}>
                     <Grid item lg={4} md={4} sm={4} xs={12}>
                         <TextField
@@ -288,7 +305,7 @@ const AddMemberForm = () => {
                             name="location"
                             size="small"
                             onChange={formik.handleChange}
-                            value={formik.values.location}
+                            value={formik.values?.location || ''}
                             error={
                                 formik.touched.location &&
                                 Boolean(formik.errors.location)
@@ -297,14 +314,13 @@ const AddMemberForm = () => {
                                 formik.touched.location &&
                                 formik.errors.location
                             }
-                            // InputProps={{
-                            //     startAdornment: (
-                            //         <InputAdornment position="start">
-                            //             <FaIcons.FaLocationArrow />
-                            //         </InputAdornment>
-                            //     ),
-                            // }}
-                            
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <FaIcons.FaLocationArrow />
+                                    </InputAdornment>
+                                ),
+                            }}
                         />
                     </Grid>
 
@@ -314,23 +330,23 @@ const AddMemberForm = () => {
                             className="mb-4 w-full"
                             label="Mobile Number"
                             type="text"
-                            name="mobile"
+                            name="mobileNumber"
                             onChange={formik.handleChange}
-                            value={formik.values.mobile}
+                            value={formik.values?.mobileNumber || ''}
                             error={
-                                formik.touched.mobile &&
-                                Boolean(formik.errors.mobile)
+                                formik.touched.mobileNumber &&
+                                Boolean(formik.errors.mobileNumber)
                             }
                             helpertext={
-                                formik.touched.mobile && formik.errors.mobile
+                                formik.touched.mobileNumber && formik.errors.mobileNumber
                             }
-                            // InputProps={{
-                            //     startAdornment: (
-                            //         <InputAdornment position="start">
-                            //             <FaIcons.FaMobile />
-                            //         </InputAdornment>
-                            //     ),
-                            // }}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <FaIcons.FaMobile />
+                                    </InputAdornment>
+                                ),
+                            }}
                         />
                     </Grid>
                     <Grid item lg={4} md={4} sm={4} xs={12}>
@@ -341,7 +357,7 @@ const AddMemberForm = () => {
                             type="text"
                             name="occupation"
                             onChange={formik.handleChange}
-                            value={formik.values.occupation}
+                            value={formik.values?.occupation || ''}
                             error={
                                 formik.touched.occupation &&
                                 Boolean(formik.errors.occupation)
@@ -350,17 +366,16 @@ const AddMemberForm = () => {
                                 formik.touched.occupation &&
                                 formik.errors.occupation
                             }
-                            // InputProps={{
-                            //     startAdornment: (
-                            //         <InputAdornment position="start">
-                            //             <MdIcons.MdWork />
-                            //         </InputAdornment>
-                            //     ),
-                            // }}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <MdIcons.MdWork />
+                                    </InputAdornment>
+                                ),
+                            }}
                         />
                     </Grid>
                 </Grid>
-
                 <Grid container spacing={6}>
                     <Grid item lg={4} md={4} sm={4} xs={12}>
                         <TextField
@@ -370,7 +385,7 @@ const AddMemberForm = () => {
                             type="text"
                             name="yearOfJoining"
                             onChange={formik.handleChange}
-                            value={formik.values.yearOfJoining}
+                            value={formik.values?.yearOfJoining || ''}
                             error={
                                 formik.touched.yearOfJoining &&
                                 Boolean(formik.errors.yearOfJoining)
@@ -379,60 +394,62 @@ const AddMemberForm = () => {
                                 formik.touched.yearOfJoining &&
                                 formik.errors.yearOfJoining
                             }
-                            // InputProps={{
-                            //     startAdornment: (
-                            //         <InputAdornment position="start">
-                            //             <FaIcons.FaCalendar />
-                            //         </InputAdornment>
-                            //     ),
-                            // }}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <FaIcons.FaCalendar />
+                                    </InputAdornment>
+                                ),
+                            }}
                         />
                     </Grid>
                     <Grid item lg={4} md={4} sm={4} xs={12}>
                         <FormControl fullWidth>
                             <InputLabel id="msId">
-                            <FaIcons.FaCircle /> Membership Status</InputLabel>
+                                <FaIcons.FaCircle /> Membership Status
+                            </InputLabel>
                             <Select
                                 fullWidth
                                 labelId="msId"
                                 id="msId"
                                 size="small"
-                                label="Role"
-                                name="membershipStatus"
+                                label="Membership Status"
+                                name="memberStatus"
                                 onChange={formik.handleChange}
-                                value={formik.values.membershipStatus}
+                                value={formik.values?.memberStatus || ''}
                                 error={
-                                    formik.touched.membershipStatus &&
-                                    Boolean(formik.errors.membershipStatus)
+                                    formik.touched.memberStatus &&
+                                    Boolean(formik.errors.memberStatus)
                                 }
                                 helpertext={
-                                    formik.touched.membershipStatus &&
-                                    formik.errors.membershipStatus
+                                    formik.touched.memberStatus &&
+                                    formik.errors.memberStatus
                                 }
                             >
-                                <MenuItem value="Fuill Member">Fuill Member</MenuItem>
-                                <MenuItem value="Adherent">Adherent</MenuItem>
-                                <MenuItem value="Catchumen">
-                                   Catchumen
+                                <MenuItem value="Full Member">
+                                    Full Member
                                 </MenuItem>
-                             
+                                <MenuItem value="Adherent">Adherent</MenuItem>
+                                <MenuItem value="Catchumen">Catchumen</MenuItem>
                             </Select>
                         </FormControl>
                     </Grid>
 
                     <Grid item lg={4} md={4} sm={4} xs={12}>
-                    <FormControl fullWidth>
+                        <FormControl fullWidth>
                             <InputLabel id="roleId">
-                            <FaIcons.FaUserTie /> Role</InputLabel>
+                                <FaIcons.FaUserTie /> Role
+                            </InputLabel>
                             <Select
                                 fullWidth
                                 labelId="roleId"
                                 id="roleId"
                                 size="small"
                                 label="Role"
+                                multiple
                                 name="memberRole"
-                                onChange={formik.handleChange}
-                                value={formik.values.memberRole}
+                                onChange={(e) =>handleMultiChange(e,setMRole)}
+                                value={mRole}
                                 error={
                                     formik.touched.memberRole &&
                                     Boolean(formik.errors.memberRole)
@@ -443,20 +460,22 @@ const AddMemberForm = () => {
                                 }
                             >
                                 <MenuItem value="Leader">Leader</MenuItem>
-                                <MenuItem value="Class Leader">Class Leader</MenuItem>
+                                <MenuItem value="Class Leader">
+                                    Class Leader
+                                </MenuItem>
                                 <MenuItem value=" Children Service Tutor">
                                     Children Service Tutor
                                 </MenuItem>
                                 <MenuItem value="Steward">Steward</MenuItem>
                                 <MenuItem value="Usher">Usher</MenuItem>
                                 <MenuItem value="Usher">Liturgist</MenuItem>
-                                <MenuItem value="Care Taker">Care Taker</MenuItem>
+                                <MenuItem value="Care Taker">
+                                    Care Taker
+                                </MenuItem>
                             </Select>
                         </FormControl>
-                      
                     </Grid>
                 </Grid>
-
                 <Grid container spacing={6}>
                     <Grid item lg={4} md={4} sm={4} xs={12}>
                     <FormControl fullWidth>
@@ -469,7 +488,7 @@ const AddMemberForm = () => {
                                 label="Class Leader"
                                 name="classLeader"
                                 onChange={formik.handleChange}
-                                value={formik.values.classLeader}
+                                value={formik.values?.classLeader||''}
                                 error={
                                     formik.touched.classLeader &&
                                     Boolean(formik.errors.classLeader)
@@ -479,7 +498,7 @@ const AddMemberForm = () => {
                                     formik.errors.classLeader
                                 }
                             >
-                                <MenuItem value="NA">Not assinged</MenuItem>
+                                <MenuItem value="6192220b404220391b9fc921">Not assinged</MenuItem>
                                
                             </Select>
                         </FormControl>
@@ -498,16 +517,16 @@ const AddMemberForm = () => {
                                 multiple
                                 label="Organisation"
                                 name="organisation"
-                                onChange={handleMultiChange}
+                                onChange={(e) =>handleMultiChange(e,setOrgs)}
                                 value={orgs}
-                                // error={
-                                //     formik.touched.organisation &&
-                                //     Boolean(formik.errors.organisation)
-                                // }
-                                // helpertext={
-                                //     formik.touched.organisation &&
-                                //     formik.errors.organisation
-                                // }
+                                error={
+                                    formik.touched.organisation &&
+                                    Boolean(formik.errors.organisation)
+                                }
+                                helpertext={
+                                    formik.touched.organisation &&
+                                    formik.errors.organisation
+                                }
                             >
                               
                                 <MenuItem value="Youth">Youth</MenuItem>
@@ -527,55 +546,54 @@ const AddMemberForm = () => {
                             className="mb-4 w-full"
                             label="Emergency Contact"
                             type="text"
-                            name="emContact"
+                            name="emergencyContact"
                             size="small"
                             onChange={formik.handleChange}
-                            value={formik.values.emContact}
+                            value={formik.values?.emergencyContact||''}
                             error={
-                                formik.touched.emContact &&
-                                Boolean(formik.errors.emContact)
+                                formik.touched.emergencyContact &&
+                                Boolean(formik.errors.emergencyContact)
                             }
                             helpertext={
-                                formik.touched.emContact &&
-                                formik.errors.emContact
+                                formik.touched.emergencyContact &&
+                                formik.errors.emergencyContact
                             }
-                            // InputProps={{
-                            //     startAdornment: (
-                            //         <InputAdornment position="start">
-                            //             <FaIcons.FaMobile />
-                            //         </InputAdornment>
-                            //     ),
-                            // }}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <FaIcons.FaMobile />
+                                    </InputAdornment>
+                                ),
+                            }}
                         />
                        
                     </Grid>
                 </Grid>
-
                 <Grid container spacing={6}>
                     <Grid item lg={4} md={4} sm={4} xs={12}>
                     <TextField
                             className="mb-4 w-full"
                             label="Contact Name"
                             type="text"
-                            name="contactName"
+                            name="emergencyContactName"
                             size="small"
                             onChange={formik.handleChange}
-                            value={formik.values.contactName}
+                            value={formik.values?.emergencyContactName ||''}
                             error={
-                                formik.touched.contactName &&
-                                Boolean(formik.errors.contactName)
+                                formik.touched.emergencyContactName &&
+                                Boolean(formik.errors.emergencyContactName)
                             }
                             helpertext={
-                                formik.touched.yearOfJoining &&
-                                formik.errors.yearOfJoining
+                                formik.touched.emergencyContactName &&
+                                formik.errors.emergencyContactName
                             }
-                            // InputProps={{
-                            //     startAdornment: (
-                            //         <InputAdornment position="start">
-                            //             <FaIcons.FaUser />
-                            //         </InputAdornment>
-                            //     ),
-                            // }}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <FaIcons.FaUser />
+                                    </InputAdornment>
+                                ),
+                            }}
                         />
                        
                     </Grid>
@@ -593,7 +611,7 @@ const AddMemberForm = () => {
                                 label="RelationId"
                                 name="relation"
                                 onChange={formik.handleChange}
-                                value={formik.values.relation}
+                                value={formik.values?.relation||''}
                                 error={
                                     formik.touched.relationId &&
                                     Boolean(formik.errors.relationId)
@@ -620,10 +638,12 @@ const AddMemberForm = () => {
                 <div style={{ marginTop: 30 }}>
                     <Grid container spacing={6}>
                         <Grid item lg={6} md={6} sm={12} xs={12}>
-                            
-                             
                                 <span>Inactive</span>
-                                <Switch  defaultChecked color="secondary" />
+                                {
+                                    active?  <Switch checked  onChange={()=>setActive(!active)} color="secondary" /> :
+                                    <Switch   onChange={()=>setActive(!active)} color="secondary" />
+                                }
+                               
                                 <span>Active</span>
                            
                         </Grid>
@@ -637,7 +657,7 @@ const AddMemberForm = () => {
                               
                             >
                                 <Icon>save</Icon>
-                                <span className="pl-2 capitalize">Submit</span>
+                                <span className="pl-2 capitalize">  {!isUpdate? 'Submit': 'Update'} </span>
                             </Button>
                             <Button
                                 onClick={() => dispatch(toggleForm())}
@@ -652,6 +672,7 @@ const AddMemberForm = () => {
                         </Grid>
                     </Grid>
                 </div>
+           
             </form>
         </div>
     )

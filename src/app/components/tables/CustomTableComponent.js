@@ -16,8 +16,14 @@ import { Icon, Button, IconButton, Fab } from '@material-ui/core'
 import {
     getMemberById,
     toggleForm,
+    removeMember
 } from '../../redux/adultService/AdultServiceActions'
 import { useDispatch, useSelector } from 'react-redux'
+import Image from '../../views/members/001-man.svg'
+
+const removeExtraSpaces = (string) => {
+    return string.replace(/\s+/g,' ').trim();
+ }
 
 function CustomTableComponent({ data }) {
     const dispatch = useDispatch()
@@ -25,8 +31,7 @@ function CustomTableComponent({ data }) {
 
     const { memberInfo } = useSelector((state) => state.adultService)
 
-    console.log({ memberInfo })
-
+   
     const toolbarClick = (args) => {
         console.log({ grid })
         if (grid && args.item.id.includes('excelexport')) {
@@ -45,7 +50,7 @@ function CustomTableComponent({ data }) {
                 <IconButton id={_id} onClick={() => editEventListener(_id)}>
                     <Icon>edit</Icon>
                 </IconButton>
-                <IconButton>
+                <IconButton onClick={() => deleteEventListener(_id)} >
                     <Icon color="error">delete</Icon>
                 </IconButton>
                 {/* <IconButton aria-label="Delete" size="small" color="danger">
@@ -71,7 +76,11 @@ function CustomTableComponent({ data }) {
         // dispatch(toggleForm())
     }
 
-    const ImageTemplate = ({ image }) => {
+    const deleteEventListener =(id)=>{
+        dispatch(removeMember(id))
+    }
+
+    const ImageTemplate = () => {
         return (
             <div className="p-0 m-0">
                 <img
@@ -81,12 +90,20 @@ function CustomTableComponent({ data }) {
                         padding: 0,
                         margin: '0 auto',
                     }}
-                    src={image}
+                    src={Image}
                     alt="image"
                 />
             </div>
         )
     }
+
+    const NameTemplate = ({firstName,lastName,others}) => {
+
+        return others? removeExtraSpaces(`${firstName} ${others} ${lastName}`) :  removeExtraSpaces(`${firstName} ${lastName}`)
+
+         
+    }
+
 
     return (
         <GridComponent
@@ -101,23 +118,24 @@ function CustomTableComponent({ data }) {
             ref={grid}
         >
             <ColumnsDirective>
-                {/* <ColumnDirective
+                <ColumnDirective
                     headerText="Member Image"
                     template={ImageTemplate}
                     field="image"
                     width="70"
                     textAlign="Center"
-                /> */}
-                <ColumnDirective headerText="ID" field="_id" width="120" />
+                />
+                <ColumnDirective visible={false} headerText="ID" field="_id" width="120" />
                 <ColumnDirective
                     headerText="Name"
                     field="firstName"
                     width="100"
+                    template={NameTemplate}
                 />
-                <ColumnDirective headerText="Role" field="role" width="100" />
+               
                 <ColumnDirective
                     headerText="Class Leader"
-                    field="lastName"
+                    field="classLeader"
                     width="100"
                 />
                 <ColumnDirective

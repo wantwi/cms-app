@@ -1,7 +1,26 @@
 import { ActionTypes,getMemberInfo} from "../adultService/AdultServiceActions"
 
-const {GET_MEMBER_INFO,ADD_MEMBER_INFO,GET_MEMRBER_BY_ID,REMOVE_MEMBER,SEARCH_BY_FIRST_NAME,TRANSFER_MEMBER,UPDATE_MEMBER_INFO,TOGGLE_FORM} = ActionTypes
-
+const {GET_MEMBER_INFO,ADD_MEMBER_INFO,GET_MEMRBER_BY_ID,REMOVE_MEMBER,SEARCH_BY_FIRST_NAME,TRANSFER_MEMBER,UPDATE_MEMBER_INFO,TOGGLE_FORM,MEMRBER_RESET,GET_MEMRBER_BY_QUERY_TYPE} = ActionTypes
+const INITIAL_MEMBER_FROM = {
+    firstName: '',
+    lastName: '',
+    mobileNumber: '',
+    gender: '',
+    date: new Date(),
+    others: '',
+    birthDate: new Date(),
+    marritalStatus: '',
+    occupation: '',
+    location: '',
+    emergencyContact: '',
+    emergencyContactName: '',
+    memberRole: [],
+    classLeader: '',
+    status: '',
+    memberStatus: '',
+    relation: '',
+    organisation: [],
+}
 
 const initialState = {
    
@@ -23,6 +42,13 @@ const AdultServiceReducer = function (state = initialState, action) {
             }
         }
 
+        case GET_MEMRBER_BY_QUERY_TYPE:{
+            return {
+                ...state,
+                membersInfo : [...action.payload]
+            }
+        }
+
         case GET_MEMRBER_BY_ID:{
 
             return {
@@ -35,9 +61,18 @@ const AdultServiceReducer = function (state = initialState, action) {
 
             return {
                 ...state,
-                memberInfo : {},
+               
                 hideForm : !state.hideForm
             }
+        }
+        case MEMRBER_RESET:{
+            return {
+                ...state,
+              
+                memberInfo : INITIAL_MEMBER_FROM,
+              
+            }
+
         }
 
        

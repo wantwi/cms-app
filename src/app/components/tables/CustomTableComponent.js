@@ -11,7 +11,8 @@ import {
     PdfExport,
     Group,
 } from '@syncfusion/ej2-react-grids'
-import { Icon, Button, IconButton, Fab } from '@material-ui/core'
+import { Icon, Button, IconButton, Fab } from '@mui/material'
+import { withStyles } from '@mui/styles';
 
 import {
     getMemberById,
@@ -62,11 +63,11 @@ function CustomTableComponent({ data }) {
 
     const statusTemplate = ({ status }) => {
         return status === 1 ? (
-            <Button variant="contained"  style={{background:"#0cc143", margin:0, padding:"5px 10px",width:100, color:"#fff"}}>
+            <span variant="contained"  style={{background:"#0cc143", margin:0, padding:"5px 10px",width:100, color:"#fff"}}>
                 Active
-            </Button>
+            </span>
         ) : (
-            <Button variant="contained" color="error">Inactive</Button>
+            <span variant="contained" >Inactive</span>
         )
     }
 

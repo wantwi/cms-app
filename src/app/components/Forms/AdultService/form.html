@@ -1,0 +1,602 @@
+<form onSubmit={formik.handleSubmit}>
+<Grid container spacing={4}>
+    <Grid item lg={4} md={4} sm={4} xs={12}>
+        <FormControl variant="standard" fullWidth>
+            <InputLabel htmlFor="input-with-icon-adornment">
+                First Name
+            </InputLabel>
+            <Input
+                id="input-with-icon-adornment"
+                startAdornment={
+                    <InputAdornment position="start">
+                        <FaIcons.FaUser />
+                    </InputAdornment>
+                }
+                name="firstName"
+                onChange={formik.handleChange}
+                value={formik.values?.firstName || ''}
+                error={
+                    formik.touched.firstName &&
+                    Boolean(formik.errors.firstName)
+                }
+                helperText={
+                    formik.touched.firstName &&
+                    formik.errors.firstName
+                }
+                size="small"
+            />
+        </FormControl>
+    </Grid>
+    <Grid item lg={4} md={4} sm={4} xs={12}>
+        <FormControl variant="standard">
+            <InputLabel htmlFor="input-with-icon-adornment">
+                Last Name
+            </InputLabel>
+            <Input
+                id=""
+                startAdornment={
+                    <InputAdornment position="start">
+                        <FaIcons.FaUser />
+                    </InputAdornment>
+                }
+                name="lastName"
+                onChange={formik.handleChange}
+                value={formik.values.lastName || ''}
+                error={
+                    formik.touched.lastName &&
+                    Boolean(formik.errors.lastName)
+                }
+                helperText={
+                    formik.touched.lastName &&
+                    formik.errors.lastName
+                }
+                size="small"
+            />
+        </FormControl>
+    </Grid>
+    <Grid item lg={4} md={4} sm={4} xs={12}>
+        <FormControl variant="standard">
+            <InputLabel htmlFor="input-with-icon-adornment">
+                others
+            </InputLabel>
+            <Input
+                id=""
+                startAdornment={
+                    <InputAdornment position="start">
+                        <FaIcons.FaUser />
+                    </InputAdornment>
+                }
+                name="others"
+                onChange={formik.handleChange}
+                value={formik.values.others || ''}
+                size="small"
+            />
+        </FormControl>
+    </Grid>
+</Grid>
+<Grid container spacing={6}>
+    <Grid item lg={4} md={4} sm={4} xs={12}>
+        <FormControl fullWidth>
+            <InputLabel htmlFor="input-with-icon-adornment">
+                Gender
+            </InputLabel>
+            <Select
+                labelId="gender"
+                id="gender"
+                name="gender"
+                onChange={formik.handleChange}
+                value={formik.values?.gender || ''}
+                error={
+                    formik.touched.gender &&
+                    Boolean(formik.errors.gender)
+                }
+                helpertext={
+                    formik.touched.gender &&
+                    formik.errors.gender
+                }
+                input={
+                    <Input
+                        label="Gender"
+                        startAdornment={
+                            <InputAdornment position="start">
+                                <FaIcons.FaTransgender />
+                            </InputAdornment>
+                        }
+                    />
+                }
+                size="small"
+            >
+                <MenuItem disabled value="">
+                    <em>None</em>
+                </MenuItem>
+                <MenuItem value="Male">Male</MenuItem>
+                <MenuItem value="Female">Female</MenuItem>
+            </Select>
+        </FormControl>
+    </Grid>
+
+    <Grid item lg={4} md={4} sm={4} xs={12}>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+                className="mb-4 w-full"
+                margin="none"
+                id="mui-pickers-date"
+                label="Birth Date"
+                inputVariant="standard"
+                type="text"
+                autoOk={true}
+                value={date}
+                onChange={handleDateChange}
+                KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                }}
+            />
+        </MuiPickersUtilsProvider>
+    </Grid>
+    <Grid item lg={4} md={4} sm={4} xs={12}>
+        <FormControl fullWidth>
+            <InputLabel htmlFor="input-with-icon-adornment">
+                Marrital Status
+            </InputLabel>
+            <Select
+                labelId="marritalStatus"
+                id="marritalStatus"
+                name="marritalStatus"
+                onChange={formik.handleChange}
+                value={formik.values?.marritalStatus || ''}
+                error={
+                    formik.touched.marritalStatus &&
+                    Boolean(formik.errors.marritalStatus)
+                }
+                helpertext={
+                    formik.touched.marritalStatus &&
+                    formik.errors.marritalStatus
+                }
+                input={
+                    <Input
+                        label="Marrital Status"
+                        startAdornment={
+                            <InputAdornment position="start">
+                                <FaIcons.FaCircle />
+                            </InputAdornment>
+                        }
+                    />
+                }
+                size="small"
+            >
+                <MenuItem disabled value="">
+                    <em>None</em>
+                </MenuItem>
+                <MenuItem value="Single">Single</MenuItem>
+                <MenuItem value="Married">Married</MenuItem>
+                <MenuItem value="Divorce">Divorce</MenuItem>
+                <MenuItem value="Widow">Widow</MenuItem>
+                <MenuItem value="Widower">Widower</MenuItem>
+            </Select>
+        </FormControl>
+    </Grid>
+</Grid>
+<Grid container spacing={6}>
+    <Grid item lg={4} md={4} sm={4} xs={12}>
+        <FormControl variant="standard">
+            <InputLabel htmlFor="input-with-icon-adornment">
+                Location
+            </InputLabel>
+            <Input
+                id=""
+                startAdornment={
+                    <InputAdornment position="start">
+                        <FaIcons.FaLocationArrow />
+                    </InputAdornment>
+                }
+                name="location"
+                onChange={formik.handleChange}
+                value={formik.values?.location || ''}
+                error={
+                    formik.touched.location &&
+                    Boolean(formik.errors.location)
+                }
+                helpertext={
+                    formik.touched.location &&
+                    formik.errors.location
+                }
+                size="small"
+            />
+        </FormControl>
+    </Grid>
+
+    <Grid item lg={4} md={4} sm={4} xs={12}>
+        <FormControl variant="standard">
+            <InputLabel htmlFor="input-with-icon-adornment">
+                Mobile Number
+            </InputLabel>
+            <Input
+                id="mobileNumber"
+                startAdornment={
+                    <InputAdornment position="start">
+                        <FaIcons.FaMobile />
+                    </InputAdornment>
+                }
+                name="mobileNumber"
+                onChange={formik.handleChange}
+                value={formik.values?.mobileNumber || ''}
+                error={
+                    formik.touched.mobileNumber &&
+                    Boolean(formik.errors.mobileNumber)
+                }
+                helpertext={
+                    formik.touched.mobileNumber &&
+                    formik.errors.mobileNumber
+                }
+                size="small"
+            />
+        </FormControl>
+    </Grid>
+    <Grid item lg={4} md={4} sm={4} xs={12}>
+        <FormControl variant="standard">
+            <InputLabel htmlFor="input-with-icon-adornment">
+                Occupation
+            </InputLabel>
+            <Input
+                id="Occupation"
+                startAdornment={
+                    <InputAdornment position="start">
+                        <MdIcons.MdWork />
+                    </InputAdornment>
+                }
+                name="occupation"
+                onChange={formik.handleChange}
+                value={formik.values?.occupation || ''}
+                error={
+                    formik.touched.occupation &&
+                    Boolean(formik.errors.occupation)
+                }
+                helpertext={
+                    formik.touched.occupation &&
+                    formik.errors.occupation
+                }
+                size="small"
+            />
+        </FormControl>
+    </Grid>
+</Grid>
+<Grid container spacing={6}>
+    <Grid item lg={4} md={4} sm={4} xs={12}>
+        <FormControl variant="standard">
+            <InputLabel htmlFor="input-with-icon-adornment">
+                Year of Joining
+            </InputLabel>
+            <Input
+                id="Occupation"
+                startAdornment={
+                    <InputAdornment position="start">
+                        <FaIcons.FaCalendar />
+                    </InputAdornment>
+                }
+                name="yearOfJoining"
+                onChange={formik.handleChange}
+                input={<Input label="" />}
+                value={formik.values?.yearOfJoining || ''}
+                error={
+                    formik.touched.yearOfJoining &&
+                    Boolean(formik.errors.yearOfJoining)
+                }
+                helpertext={
+                    formik.touched.yearOfJoining &&
+                    formik.errors.yearOfJoining
+                }
+                size="small"
+            />
+        </FormControl>
+    </Grid>
+    <Grid item lg={4} md={4} sm={4} xs={12}>
+        <FormControl fullWidth>
+            <InputLabel htmlFor="input-with-icon-adornment">
+                Membership Status
+            </InputLabel>
+            <Select
+                labelId="memberStatus"
+                id="memberStatus"
+                name="memberStatus"
+                onChange={formik.handleChange}
+                input={<Input label="Membership Status" />}
+                value={formik.values?.memberStatus || ''}
+                error={
+                    formik.touched.memberStatus &&
+                    Boolean(formik.errors.memberStatus)
+                }
+                helpertext={
+                    formik.touched.memberStatus &&
+                    formik.errors.memberStatus
+                }
+                input={
+                    <Input
+                        label="Gender"
+                        startAdornment={
+                            <InputAdornment position="start">
+                                <FaIcons.FaCircle />
+                            </InputAdornment>
+                        }
+                    />
+                }
+                size="small"
+            >
+                <MenuItem value="Full Member">
+                    Full Member
+                </MenuItem>
+                <MenuItem value="Adherent">Adherent</MenuItem>
+                <MenuItem value="Catchumen">Catchumen</MenuItem>
+            </Select>
+        </FormControl>
+    </Grid>
+
+    <Grid item lg={4} md={4} sm={4} xs={12}>
+        <FormControl variant="standard" fullWidth>
+            <InputLabel htmlFor="input-with-icon-adornment">
+                Role
+            </InputLabel>
+            <Select
+                fullWidth
+                labelId="roleId"
+                size="small"
+                id="demo-multiple-checkbox"
+                multiple
+                value={mRole}
+                name="memberRole"
+                error={
+                    formik.touched.memberRole &&
+                    Boolean(formik.errors.memberRole)
+                }
+                helpertext={
+                    formik.touched.memberRole &&
+                    formik.errors.memberRole
+                }
+                onChange={(e) => handleMultiChange(e, setMRole)}
+                input={
+                    <Input
+                        label="Role"
+                        startAdornment={
+                            <InputAdornment position="start">
+                                <FaIcons.FaUserTie />
+                            </InputAdornment>
+                        }
+                    />
+                }
+                renderValue={(selected) => selected.join(', ')}
+                // MenuProps={MenuProps}
+            >
+                {defaultRoles.map((name) => (
+                    <MenuItem key={name} value={name}>
+                        <Checkbox
+                            checked={mRole.indexOf(name) > -1}
+                        />
+                        <ListItemText primary={name} />
+                    </MenuItem>
+                ))}
+            </Select>
+        </FormControl>
+    </Grid>
+</Grid>
+<Grid container spacing={6}>
+    <Grid item lg={4} md={4} sm={4} xs={12}>
+
+    <FormControl fullWidth>
+            <InputLabel htmlFor="input-with-icon-adornment">Class Leader</InputLabel>
+            <Select
+                labelId="relation"
+                size="small"
+              
+                name="classLeader"
+                onChange={formik.handleChange}
+                value={formik.values?.classLeader || ''}
+                error={
+                    formik.touched.classLeader &&
+                    Boolean(formik.errors.classLeader)
+                }
+                helpertext={
+                    formik.touched.classLeader &&
+                    formik.errors.classLeader
+                }
+                input={
+                    <Input
+                        label="Gender"
+                        startAdornment={
+                            <InputAdornment position="start">
+                                <FaIcons.FaUserTie />
+                            </InputAdornment>
+                        }
+                    />
+                }
+                size="small"
+            >
+                <MenuItem disabled value="">
+                    Select class leader
+                </MenuItem>
+                <MenuItem value="6192220b404220391b9fc921">
+                    Not assinged
+                </MenuItem>
+            </Select>
+        </FormControl>
+
+     
+    </Grid>
+    <Grid item lg={4} md={4} sm={4} xs={12}>
+        <FormControl fullWidth>
+            <InputLabel id="OrganisationId">
+                <FaIcons.FaUsers /> Organisation
+            </InputLabel>
+            <Select
+                fullWidth
+                labelId="OrganisationId"
+                id=""
+                size="small"
+                multiple
+                label="Organisation"
+                name="organisation"
+                onChange={(e) => handleMultiChange(e, setOrgs)}
+                value={orgs}
+                error={
+                    formik.touched.organisation &&
+                    Boolean(formik.errors.organisation)
+                }
+                helpertext={
+                    formik.touched.organisation &&
+                    formik.errors.organisation
+                }
+            >
+                <MenuItem value="Youth">Youth</MenuItem>
+                <MenuItem value="Brigade">Brigade</MenuItem>
+                <MenuItem value="Guild">Guild</MenuItem>
+                <MenuItem value="NA">No organisation</MenuItem>
+            </Select>
+        </FormControl>
+    </Grid>
+
+    <Grid item lg={4} md={4} sm={4} xs={12}>
+        <FormControl variant="standard">
+            <InputLabel htmlFor="input-with-icon-adornment">
+                Emergency Contact
+            </InputLabel>
+            <Input
+                id="emergencyContact"
+                startAdornment={
+                    <InputAdornment position="start">
+                        <FaIcons.FaMobile />
+                    </InputAdornment>
+                }
+                name="emergencyContact"
+                size="small"
+                onChange={formik.handleChange}
+                value={formik.values?.emergencyContact || ''}
+                error={
+                    formik.touched.emergencyContact &&
+                    Boolean(formik.errors.emergencyContact)
+                }
+                helpertext={
+                    formik.touched.emergencyContact &&
+                    formik.errors.emergencyContact
+                }
+            />
+        </FormControl>
+    </Grid>
+</Grid>
+<Grid container spacing={6}>
+    <Grid item lg={4} md={4} sm={4} xs={12}>
+        <TextField
+            className="mb-4 w-full"
+            label="Contact Name"
+            type="text"
+            name="emergencyContactName"
+            size="small"
+            onChange={formik.handleChange}
+            value={formik.values?.emergencyContactName || ''}
+            error={
+                formik.touched.emergencyContactName &&
+                Boolean(formik.errors.emergencyContactName)
+            }
+            helpertext={
+                formik.touched.emergencyContactName &&
+                formik.errors.emergencyContactName
+            }
+            InputProps={{
+                startAdornment: (
+                    <InputAdornment position="start">
+                        <FaIcons.FaUser />
+                    </InputAdornment>
+                ),
+            }}
+        />
+    </Grid>
+    <Grid item lg={4} md={4} sm={4} xs={12}>
+        <FormControl fullWidth>
+            <InputLabel htmlFor="input-with-icon-adornment">
+                Relation
+            </InputLabel>
+            <Select
+                labelId="relation"
+                size="small"
+                label="RelationId"
+                name="relation"
+                onChange={formik.handleChange}
+                value={formik.values?.relation || ''}
+                error={
+                    formik.touched.relationId &&
+                    Boolean(formik.errors.relationId)
+                }
+                helpertext={
+                    formik.touched.relationId &&
+                    formik.errors.relationId
+                }
+                input={
+                    <Input
+                        label="Gender"
+                        startAdornment={
+                            <InputAdornment position="start">
+                                <FaIcons.FaUsers />
+                            </InputAdornment>
+                        }
+                    />
+                }
+                size="small"
+            >
+                <MenuItem disabled value="">
+                    Select relation
+                </MenuItem>
+                <MenuItem value="Child">Child</MenuItem>
+                <MenuItem value="Spouse">Spouse</MenuItem>
+                <MenuItem value="Relative">Relative</MenuItem>
+                <MenuItem value="Guardian">Guardian</MenuItem>
+            </Select>
+        </FormControl>
+    </Grid>
+</Grid>
+
+<div style={{ marginTop: 30 }}>
+    <Grid container spacing={6}>
+        <Grid item lg={6} md={6} sm={12} xs={12}>
+            <span>Inactive</span>
+            {active ? (
+                <Switch
+                    checked
+                    onChange={() => setActive(!active)}
+                    color="secondary"
+                />
+            ) : (
+                <Switch
+                    onChange={() => setActive(!active)}
+                    color="secondary"
+                />
+            )}
+
+            <span>Active</span>
+        </Grid>
+
+        <Grid item lg={6} md={6} sm={12} xs={12}>
+            <Button
+                color="primary"
+                variant="contained"
+                type="submit"
+                style={{ float: 'right' }}
+            >
+                <Icon>save</Icon>
+                <span className="pl-2 capitalize">
+                    {' '}
+                    {!isUpdate ? 'Submit' : 'Update'}{' '}
+                </span>
+            </Button>
+            <Button
+                onClick={() => dispatch(toggleForm())}
+                color="inherit"
+                variant="contained"
+                type="button"
+                style={{ float: 'right', marginRight: 20 }}
+            >
+                <Icon>cancel</Icon>
+                <span className="pl-2 capitalize">Cancel</span>
+            </Button>
+        </Grid>
+    </Grid>
+</div>
+</form>
+
+const defaultRoles = [ 'Steward','Leader', 'Liturgist', 'Usher', 'Lay Preacher', 'Sunday School Teacher', 'Bible Reader', 'Resisdent Minister', 'Church Staff', 'Interpreter']

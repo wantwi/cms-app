@@ -102,7 +102,11 @@ function AdultServicePage() {
          
             dispatch(getMemberInfo())
 
-           
+            return () => {
+                dispatch(toggleForm())
+            
+               
+            }
            
         }, [])
 

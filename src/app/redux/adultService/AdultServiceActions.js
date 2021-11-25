@@ -11,8 +11,11 @@ export const ActionTypes = {
     TOGGLE_FORM:"TOGGLE_FORM",
     REGISTER_NEW_MEMBER:"REGISTER_NEW_MEMBER",
     MEMRBER_RESET:"MEMRBER_RESET",
-    GET_MEMRBER_BY_QUERY_TYPE:"GET_MEMRBER_BY_QUERY_TYPE"
-    
+    GET_MEMRBER_BY_QUERY_TYPE:"GET_MEMRBER_BY_QUERY_TYPE",
+    ADD_COMMITTEE:'ADD_COMMITTEE',
+    GET_COMMITTEES:'GET_COMMITTEES',
+    SET_COMMITTEE:"SET_COMMITTEE",
+    GET_COMMITTEE_MEMBERS:'GET_COMMITTEE_MEMBERS'
 
 }
 
@@ -60,7 +63,7 @@ export const removeMember =  (id) => async  (dispatch) => {
     try {
         const request = await axios.delete(`http://localhost:6200/api-v1/members/${id}/delete`)
         if(!request) return
-        dispatch(getMemberInfo())
+        //dispatch(getMemberInfo())
         
     } catch (error) {
         console.log({error});
@@ -88,8 +91,6 @@ export const getMemberByQueryType =  (query,value) => async  (dispatch) => {
 
 
 export const resetMemberInfo = () => async (dispatch)=>{
-   
-    
 
     dispatch({
         type:ActionTypes.MEMRBER_RESET,
@@ -121,13 +122,83 @@ export const updateMember =  (id,data) => async  (dispatch) => {
 
 
         if(!request) return
-        dispatch(getMemberInfo())
+        //
          dispatch({
         type: ActionTypes.TOGGLE_FORM})
+        setTimeout(()=> dispatch(getMemberInfo()),10)
+
+      //  dispatch(getMemberInfo())
     } catch (error) {
         console.log({error});
     }
 }
+
+
+export const addCommittee =(data)=> async(dispatch)=>{
+
+    try {
+        const request = await axios.post(`http://localhost:6200/api-v1/committee`,data)
+
+        if(!request) {
+            throw 'Something went wrong'
+            return
+        }
+        // dispatch({
+        //     type:ActionTypes.ADD_COMMITTEE,
+          
+        // })
+        dispatch({
+            type:ActionTypes.GET_COMMITTEE,
+          
+        })
+        
+    } catch (error) {
+        console.log({error});
+    }
+
+}
+
+export const getCommittees =  () => async  (dispatch) => {
+
+    try {
+        const request = await axios.get('http://localhost:6200/api-v1/committee')
+      
+        if(!request) return
+        dispatch({
+            type:ActionTypes.GET_COMMITTEES,
+            payload: request.data.data,
+        })
+    } catch (error) {
+        console.log({error});
+    }
+}
+
+export const selecedRow =(data)=> async(dispatch)=>{
+
+    dispatch({
+        type:ActionTypes.SET_COMMITTEE,
+        payload: data,
+    })
+    try {
+        const request = await axios.get(`http://localhost:6200/api-v1/committee/${data._id}/member`)
+        if(!request){
+                throw 'Something went wrong'
+        }
+
+        dispatch({
+            type:ActionTypes.GET_COMMITTEE_MEMBERS,
+            payload: request.data.data,
+        })
+
+    } catch (error) {
+        console.log({error});
+    }
+
+   
+
+}
+
+
 
 
 

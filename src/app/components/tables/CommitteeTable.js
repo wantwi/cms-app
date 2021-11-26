@@ -59,11 +59,11 @@ const  dropdownTemp = {
 
 const statusTemplate = ({ status }) => {
     return status === 1 ? (
-        <span variant="contained"  style={{background:"#0cc143", margin:0, padding:"5px 10px",width:100, color:"#fff"}}>
+        <span variant="contained"  style={{background:"#4afb00a1", margin:0, padding:"5px 15px",width:120,borderRadius: 10, color:"#fff"}}>
             Active
         </span>
     ) : (
-        <span variant="contained" >Inactive</span>
+        <span variant="contained" style={{background:"#fb00008c",borderRadius: 10, margin:0, padding:"5px 10px",width:100, color:"#fff"}} >Inactive</span>
     )
 }
 
@@ -142,7 +142,7 @@ function CommitteeTable({ data }) {
                     template ={statusTemplate}
                 />
             </ColumnsDirective>
-            <Inject services={[Page, Toolbar, Toolbar, Edit, Group]} />
+            <Inject services={[Page, Toolbar, Edit, Group]} />
         </GridComponent>
     )
 }

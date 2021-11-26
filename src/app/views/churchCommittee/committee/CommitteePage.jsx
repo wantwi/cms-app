@@ -5,16 +5,36 @@ import { Breadcrumb } from 'app/components'
 import {useDispatch,useSelector} from "react-redux"
 import ClassTable from 'app/components/tables/ClassTable'
 import CommitteeTable from 'app/components/tables/CommitteeTable'
-import {addCommittee,getCommittees} from "../../../redux/adultService/AdultServiceActions"
+import {getCommittees,getMemberInfo,addCommitteeMembers} from "../../../redux/adultService/AdultServiceActions"
+import DisplayMemberTable from 'app/components/tables/DisplayMemberTable'
+import FormModal from 'app/components/CustomizedDialog/FormModal'
+import SelectionTable from 'app/components/tables/SelectionTable'
 
 function CommitteePage() {
     const dispatch = useDispatch()
-    const {committees,committeeMembers} = useSelector(state =>state.adultService)
+    const {committees,committeeMembers,committee,membersInfo} = useSelector(state =>state.adultService)
+    const [isOpen, setisOpen] = useState(false)
+    const selectionGrid = useRef(null)
 
-  
+
+  const toggleModal = ()=>{
+    setisOpen(!isOpen)
+  }
+  const saveActionHandler =()=>{
+
+    let values = []
+  selectionGrid.current.getSelectedRecords().map(x =>{
+    values.push({member:x.id, isLeader:false})
+  })
+    
+     dispatch(addCommitteeMembers(committee._id,values))
+  }
+
+ 
 
     useEffect(() => {
         dispatch(getCommittees())
+        dispatch(getMemberInfo())
        }, [])
 
     return (
@@ -37,12 +57,17 @@ function CommitteePage() {
 
                 <Grid item xl={7} lg={7} md={7} sm={12} xs={12}>
                     <Card className="px-6 pt-2 pb-4 mb-3">
-                        <ClassTable data={committeeMembers} />
+                        <DisplayMemberTable data={committeeMembers} toggleModal={toggleModal} open={isOpen} />
                     </Card>
                 </Grid>
             </Grid>
+            <FormModal  open={isOpen}  title ={`Add to ${committee.name} Committee`} toggleModal = {toggleModal} saveActionHandler ={saveActionHandler}>
+           <SelectionTable selectionGrid = {selectionGrid} data ={membersInfo}/>
+            </ FormModal>
         </div>
     )
 }
+
+
 
 export default CommitteePage

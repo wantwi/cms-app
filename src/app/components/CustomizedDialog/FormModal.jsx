@@ -75,7 +75,7 @@ function FormModal(props) {
                 <DialogActions>
                     <Button onClick={toggleModal} className="bg-error">
                         <Icon>close</Icon>
-
+                       
                         <span className="pl-2 capitalize">Close</span>
                     </Button>
                     <Button

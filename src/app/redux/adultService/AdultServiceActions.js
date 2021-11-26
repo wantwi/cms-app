@@ -15,7 +15,8 @@ export const ActionTypes = {
     ADD_COMMITTEE:'ADD_COMMITTEE',
     GET_COMMITTEES:'GET_COMMITTEES',
     SET_COMMITTEE:"SET_COMMITTEE",
-    GET_COMMITTEE_MEMBERS:'GET_COMMITTEE_MEMBERS'
+    GET_COMMITTEE_MEMBERS:'GET_COMMITTEE_MEMBERS',
+    ADD_COMMITTEE_MEMBERS:"ADD_COMMITTEE_MEMBERS"
 
 }
 
@@ -173,6 +174,19 @@ export const getCommittees =  () => async  (dispatch) => {
     }
 }
 
+
+export const addCommitteeMembers =(id,data)=> async(dispatch)=>{
+    try {
+        const request = await axios.post(`http://localhost:6200/api-v1/committee/${id}/members`,data)
+      
+        if(!request) return
+        dispatch(getCommitteeMembersByCommitteeId(id))
+    } catch (error) {
+        console.log({error});
+    }
+
+}
+
 export const selecedRow =(data)=> async(dispatch)=>{
 
     dispatch({
@@ -181,13 +195,14 @@ export const selecedRow =(data)=> async(dispatch)=>{
     })
     try {
         const request = await axios.get(`http://localhost:6200/api-v1/committee/${data._id}/member`)
+        console.log({request})
         if(!request){
                 throw 'Something went wrong'
         }
 
         dispatch({
             type:ActionTypes.GET_COMMITTEE_MEMBERS,
-            payload: request.data.data,
+            payload: request.data.data.committeeMembers,
         })
 
     } catch (error) {
@@ -198,6 +213,27 @@ export const selecedRow =(data)=> async(dispatch)=>{
 
 }
 
+
+export const getCommitteeMembersByCommitteeId =(id)=> async(dispatch)=>{
+
+    try {
+        const request = await axios.get(`http://localhost:6200/api-v1/member`)
+        console.log({request})
+      
+        if(!request){
+                throw 'Something went wrong'
+        }
+
+        // dispatch({
+        //     type:ActionTypes.GET_COMMITTEE_MEMBERS,
+        //     payload: request.data.data.committeeMembers,
+        // })
+
+    } catch (error) {
+        console.log({error});
+    }
+
+}
 
 
 

@@ -44,7 +44,8 @@ const initialState = {
     hideForm: true,
     committees: [],
     committee:{},
-    committeeMembers:[]
+    committeeMembers:[],
+    isModalOpen:false
 }
 
 const AdultServiceReducer = function (state = initialState, action) {

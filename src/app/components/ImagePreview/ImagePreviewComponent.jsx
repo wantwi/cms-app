@@ -1,22 +1,32 @@
 import React, { useState,useRef } from 'react'
 import { Icon, Button, IconButton, Fab } from '@material-ui/core'
 import Image from '../../views/members/001-man.svg'
-const ImagePreviewComponent = () => {
-    const [selectedImage, setSelectedImage] = useState(null)
+import { useDispatch, useSelector } from 'react-redux'
+import { setUploadImage } from 'app/redux/adultService/AdultServiceActions'
 
-    const imageUploadBtn = useRef(null)
+const ImagePreviewComponent = ({imageUploadBtn,imageChange,selectedImage,removeSelectedImage}) => {
+    const dispatch = useDispatch()
+
+    // const [selectedImage, setSelectedImage] = useState(null)
+
+    const { memberInfo, hideForm } = useSelector((state) => state.adultService)
+
+   
 
     // This function will be triggered when the file field change
-    const imageChange = (e) => {
-        if (e.target.files && e.target.files.length > 0) {
-            setSelectedImage(e.target.files[0])
-        }
-    }
+    // const imageChange = (e) => {
+    //     if (e.target.files && e.target.files.length > 0) {
+    //        // 
+    //         setSelectedImage(e.target.files[0])
+
+    //         console.log({memberInfo})
+
+    //        // dispatch(setUploadImage(e.target.files[0]))
+    //     }
+    // }
 
     // This function will be triggered when the "Remove This Image" button is clicked
-    const removeSelectedImage = () => {
-        setSelectedImage()
-    }
+   
 
     return (
         <>
@@ -28,7 +38,7 @@ const ImagePreviewComponent = () => {
                         src={
                             selectedImage
                                 ? URL.createObjectURL(selectedImage)
-                                : Image
+                                : memberInfo?.image?  `http://localhost:8080/${memberInfo?.image}` : Image
                         }
                         style={styles.image}
                         alt=""

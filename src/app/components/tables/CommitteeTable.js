@@ -147,4 +147,5 @@ function CommitteeTable({ data }) {
     )
 }
 
+
 export default CommitteeTable

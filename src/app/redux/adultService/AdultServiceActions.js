@@ -16,7 +16,8 @@ export const ActionTypes = {
     GET_COMMITTEES:'GET_COMMITTEES',
     SET_COMMITTEE:"SET_COMMITTEE",
     GET_COMMITTEE_MEMBERS:'GET_COMMITTEE_MEMBERS',
-    ADD_COMMITTEE_MEMBERS:"ADD_COMMITTEE_MEMBERS"
+    ADD_COMMITTEE_MEMBERS:"ADD_COMMITTEE_MEMBERS",
+    SET_UPLOADED_IMAGE:"SET_UPLOADED_IMAGE"
 
 }
 
@@ -26,12 +27,12 @@ axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`
 export const getMemberInfo =  () => async  (dispatch) => {
 
     try {
-        const request = await axios.get('http://localhost:6200/api-v1/members')
-        console.log(request.data)
+        const request = await axios.get('http://localhost:8080/api/persons/0')
+       
         if(!request) return
         dispatch({
             type:ActionTypes.GET_MEMBER_INFO,
-            payload: request.data.data,
+            payload: request.data,
         })
     } catch (error) {
         console.log({error});
@@ -47,11 +48,19 @@ export const toggleForm =()=> (dispatch)=>{
 export const getMemberById =  (id) => async  (dispatch) => {
 
     try {
-        const request = await axios.get(`http://localhost:6200/api-v1/members/${id}`)
+        //const request = await axios.get(`http://localhost:6200/api-v1/members/${id}`)
+        const request = await axios.get(`http://localhost:8080/api/person/0/${id}`)
+
+       
+
+        request.data.organisation = request.data.organisation.split(",");
+        request.data.role = request.data.role.split(",");
+       
+        
         if(!request) return
         dispatch({
             type:ActionTypes.GET_MEMRBER_BY_ID,
-            payload: request.data.data,
+            payload: request.data,
         })
     } catch (error) {
         console.log({error});
@@ -103,8 +112,20 @@ export const resetMemberInfo = () => async (dispatch)=>{
 
 export const registerMember =  (data) => async  (dispatch) => {
 
+  
+
     try {
-        const request = await axios.post(`http://localhost:6200/api-v1/member/register`,data)
+       // const request = await axios.post(`http://localhost:6200/api-v1/member/register`,data)
+
+        const request = await axios.post(`http://localhost:8080/api/person/0`,data, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+        })
+
+        console.log({request})
+
+        return
 
 
         if(!request) return
@@ -114,6 +135,15 @@ export const registerMember =  (data) => async  (dispatch) => {
     } catch (error) {
         console.log({error});
     }
+}
+
+
+export const setUploadImage = (data) => async (dispatch)=>{
+    dispatch({
+        type:ActionTypes.SET_UPLOADED_IMAGE,
+        payload:data
+      
+    })
 }
 
 export const updateMember =  (id,data) => async  (dispatch) => {
@@ -202,7 +232,7 @@ export const selecedRow =(data)=> async(dispatch)=>{
 
         dispatch({
             type:ActionTypes.GET_COMMITTEE_MEMBERS,
-            payload: request.data.data.committeeMembers,
+            payload: request.data.data,
         })
 
     } catch (error) {
@@ -217,12 +247,14 @@ export const selecedRow =(data)=> async(dispatch)=>{
 export const getCommitteeMembersByCommitteeId =(id)=> async(dispatch)=>{
 
     try {
-        const request = await axios.get(`http://localhost:6200/api-v1/member`)
+        const request = await axios.get(`http://localhost:6200/api-v1/committee/${id}/member`)
         console.log({request})
       
         if(!request){
                 throw 'Something went wrong'
         }
+
+        dispatch(toggleForm()) 
 
         // dispatch({
         //     type:ActionTypes.GET_COMMITTEE_MEMBERS,

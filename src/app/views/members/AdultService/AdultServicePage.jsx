@@ -76,9 +76,25 @@ const data = [
 function AdultServicePage() {
     const dispatch = useDispatch()
     const [queryValue, setqueryValue] = useState("")
+    const [selectedImage, setSelectedImage] = useState(null)
 
     const {membersInfo,hideForm} = useSelector((state) => state.adultService)
+    const imageUploadBtn = useRef(null)
 
+    const imageChange = (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+           // 
+            setSelectedImage(e.target.files[0])
+
+          
+           // dispatch(setUploadImage(e.target.files[0]))
+        }
+    }
+    const removeSelectedImage = () => {
+        setSelectedImage()
+    }
+
+   
    
     const handlefindMemberByQuery =(queryType)=>{
 
@@ -185,12 +201,12 @@ function AdultServicePage() {
                             raised
                         >
 
-                            <ImagePreviewComponent/>
+                            <ImagePreviewComponent imageUploadBtn={imageUploadBtn} imageChange={imageChange} selectedImage={selectedImage} removeSelectedImage={removeSelectedImage} />
                         </Card>
                     </Grid>
                     <Grid item lg={8} xl={8} xs={12} md={8}>
                         <Card className="px-6 pt-2 pb-4 mb-3" raised>
-                            <AddMemberForm  />
+                            <AddMemberForm   imageUploadBtn={imageUploadBtn} />
                         </Card>
                     </Grid>
                 </Grid>

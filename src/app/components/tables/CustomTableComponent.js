@@ -45,13 +45,13 @@ function CustomTableComponent({ data }) {
         }
     }
 
-    const commands = ({ _id }) => {
+    const commands = ({ id }) => {
         return (
             <>
-                <IconButton id={_id} onClick={() => editEventListener(_id)}>
+                <IconButton id={id} onClick={() => editEventListener(id)}>
                     <Icon>edit</Icon>
                 </IconButton>
-                <IconButton onClick={() => deleteEventListener(_id)} >
+                <IconButton onClick={() => deleteEventListener(id)} >
                     <Icon color="error">delete</Icon>
                 </IconButton>
                 {/* <IconButton aria-label="Delete" size="small" color="danger">
@@ -81,7 +81,7 @@ function CustomTableComponent({ data }) {
         dispatch(removeMember(id))
     }
 
-    const ImageTemplate = () => {
+    const ImageTemplate = ({image}) => {
         return (
             <div className="p-0 m-0">
                 <img
@@ -90,8 +90,9 @@ function CustomTableComponent({ data }) {
                         height: '45px',
                         padding: 0,
                         margin: '0 auto',
+                        borderRadius:'8px'
                     }}
-                    src={Image}
+                    src={ image? `http://localhost:8080/${image}`:Image}
                     alt="image"
                 />
             </div>
@@ -123,15 +124,22 @@ function CustomTableComponent({ data }) {
                     headerText="Member Image"
                     template={ImageTemplate}
                     field="image"
-                    width="70"
-                    textAlign="Center"
+                    width="50"
+                    textAlign="left"
                 />
-                <ColumnDirective visible={false} headerText="ID" field="_id" width="120" />
+                <ColumnDirective visible={false} headerText="ID" field="id" width="100" />
                 <ColumnDirective
                     headerText="Name"
                     field="firstName"
                     width="100"
                     template={NameTemplate}
+                />
+
+                <ColumnDirective
+                    headerText="Gender"
+                    field="gender"
+                    width="60"
+                   
                 />
                
                 <ColumnDirective
@@ -141,7 +149,7 @@ function CustomTableComponent({ data }) {
                 />
                 <ColumnDirective
                     headerText="Phone Number"
-                    field="mobileNumber"
+                    field="phoneNumber"
                     width="100"
                     format="C2"
                 />

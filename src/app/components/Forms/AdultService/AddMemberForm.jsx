@@ -4,7 +4,7 @@ import {
     Button,
     Icon,
     Grid,
-    TextField,
+  
     InputLabel,
     FormControl,
     MenuItem,
@@ -14,7 +14,7 @@ import {
     Input,
     Checkbox,
     ListItemText,
-    FormHelperText,
+  
 } from '@mui/material'
 import {
     MuiPickersUtilsProvider,
@@ -24,11 +24,10 @@ import 'date-fns'
 import DateFnsUtils from '@date-io/date-fns'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
-import * as FcIcons from 'react-icons/fc'
+
 import * as MdIcons from 'react-icons/md'
 import * as FaIcons from 'react-icons/fa'
-import * as GoIcons from 'react-icons/go'
-import * as BsIcons from 'react-icons/bs'
+
 
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -51,27 +50,33 @@ const defaultRoles = [
     'Interpreter',
 ]
 
+const defaultOrgs =['Brigade','Youth Fellowship','Girls Fellowship','Men Fellowship','Guild']
+
 let schema = yup.object().shape({
     firstName: yup.string().required('First name is required'),
     lastName: yup.string().required('Last name is required'),
     gender: yup.string().required('Gender is required'),
     //birthDate: yup.date().required('This field is required')
-    mobileNumber: yup.number().required('This field is required'),
+    phoneNumber: yup.number().required('This field is required'),
     // birthDate: yup.date().required('This field is required'),
     emergencyContact: yup.string().required('This field is required'),
-    emergencyContactName: yup.string().required('This field is required'),
+    emergencyName: yup.string().required('This field is required'),
     //birthDate: yup.date().required('This field is required'),
-    memberRole: yup.string(),
+    role: yup.string(),
 })
 
-const AddMemberForm = () => {
+const AddMemberForm = ({imageUploadBtn}) => {
     const dispatch = useDispatch()
+   
 
     const { memberInfo, hideForm } = useSelector((state) => state.adultService)
 
-    const [date, setDate] = useState(memberInfo.date)
+    const [date, setDate] = useState(memberInfo.birthDate)
+   
 
-    const [orgs, setOrgs] = React.useState(memberInfo.organisation)
+    const [orgs, setOrgs] = React.useState([])
+
+   
 
     const [isUpdate, setisUpdate] = useState(false)
 
@@ -98,9 +103,15 @@ const AddMemberForm = () => {
         onSubmit: (values) => {
             //  alert(values)
             values.birthDate = date
-            values.organisation = orgs
-            values.memberRole = mRole
-
+            values.organisation = orgs.toString()
+            values.role = mRole.toString()
+            values.image = imageUploadBtn.current.files[0]
+            console.log(imageUploadBtn.current.files[0])
+            console.log({values})
+           
+            return
+            //values.image = imageUploadBtn.current.files[0]
+//imageUploadBtn
             {
                 active ? (values.status = 1) : (values.status = 0)
             }
@@ -108,7 +119,7 @@ const AddMemberForm = () => {
             {
                 !isUpdate
                     ? dispatch(registerMember(values))
-                    : dispatch(updateMember(memberInfo._id, values))
+                    : dispatch(updateMember(memberInfo.id, values))
             }
 
             // console.log(JSON.stringify(values, null, 2))
@@ -117,12 +128,12 @@ const AddMemberForm = () => {
 
     useEffect(() => {
         if (
-            memberInfo?.organisation.length > 0 &&
-            memberInfo?.memberRole.length > 0
+            memberInfo?.organisation.length > 0 ||"" &&
+            memberInfo?.role.length > 0 ||""
         ) {
             setOrgs(memberInfo?.organisation)
             setDate(memberInfo?.birthDate)
-            setMRole(memberInfo?.memberRole)
+            setMRole(memberInfo?.role)
 
             memberInfo.status == 1 ? setActive(true) : setActive(false)
 
@@ -133,8 +144,9 @@ const AddMemberForm = () => {
     }, [memberInfo])
 
     return (
-        <div>
+        <div style={{margin:'30px'}}>
        <form onSubmit={formik.handleSubmit}>
+          
 <Grid container spacing={4}>
     <Grid item lg={4} md={4} sm={4} xs={12}>
         <FormControl variant="standard" fullWidth>
@@ -155,7 +167,7 @@ const AddMemberForm = () => {
                     formik.touched.firstName &&
                     Boolean(formik.errors.firstName)
                 }
-                helperText={
+                helpertext={
                     formik.touched.firstName &&
                     formik.errors.firstName
                 }
@@ -182,7 +194,7 @@ const AddMemberForm = () => {
                     formik.touched.lastName &&
                     Boolean(formik.errors.lastName)
                 }
-                helperText={
+                helpertext={
                     formik.touched.lastName &&
                     formik.errors.lastName
                 }
@@ -316,7 +328,7 @@ const AddMemberForm = () => {
     <Grid item lg={4} md={4} sm={4} xs={12}>
         <FormControl variant="standard">
             <InputLabel htmlFor="input-with-icon-adornment">
-                Location
+            Address /Location
             </InputLabel>
             <Input
                 id=""
@@ -325,16 +337,16 @@ const AddMemberForm = () => {
                         <FaIcons.FaLocationArrow />
                     </InputAdornment>
                 }
-                name="location"
+                name="address"
                 onChange={formik.handleChange}
-                value={formik.values?.location || ''}
+                value={formik.values?.address || ''}
                 error={
-                    formik.touched.location &&
-                    Boolean(formik.errors.location)
+                    formik.touched.address &&
+                    Boolean(formik.errors.address)
                 }
                 helpertext={
-                    formik.touched.location &&
-                    formik.errors.location
+                    formik.touched.address &&
+                    formik.errors.address
                 }
                 size="small"
             />
@@ -353,16 +365,16 @@ const AddMemberForm = () => {
                         <FaIcons.FaMobile />
                     </InputAdornment>
                 }
-                name="mobileNumber"
+                name="phoneNumber"
                 onChange={formik.handleChange}
-                value={formik.values?.mobileNumber || ''}
+                value={formik.values?.phoneNumber || ''}
                 error={
-                    formik.touched.mobileNumber &&
-                    Boolean(formik.errors.mobileNumber)
+                    formik.touched.phoneNumber &&
+                    Boolean(formik.errors.phoneNumber)
                 }
                 helpertext={
-                    formik.touched.mobileNumber &&
-                    formik.errors.mobileNumber
+                    formik.touched.phoneNumber &&
+                    formik.errors.phoneNumber
                 }
                 size="small"
             />
@@ -403,23 +415,23 @@ const AddMemberForm = () => {
                 Year of Joining
             </InputLabel>
             <Input
-                id="Occupation"
+                id="yearofJoining"
                 startAdornment={
                     <InputAdornment position="start">
                         <FaIcons.FaCalendar />
                     </InputAdornment>
                 }
-                name="yearOfJoining"
+                name="yearofJoining"
                 onChange={formik.handleChange}
                 input={<Input label="" />}
-                value={formik.values?.yearOfJoining || ''}
+                value={formik.values?.yearofJoining || ''}
                 error={
-                    formik.touched.yearOfJoining &&
-                    Boolean(formik.errors.yearOfJoining)
+                    formik.touched.yearofJoining &&
+                    Boolean(formik.errors.yearofJoining)
                 }
                 helpertext={
-                    formik.touched.yearOfJoining &&
-                    formik.errors.yearOfJoining
+                    formik.touched.yearofJoining &&
+                    formik.errors.yearofJoining
                 }
                 size="small"
             />
@@ -431,31 +443,21 @@ const AddMemberForm = () => {
                 Membership Status
             </InputLabel>
             <Select
-                labelId="memberStatus"
-                id="memberStatus"
-                name="memberStatus"
+                labelId="membershipStatus"
+                id="membershipStatus"
+                name="membershipStatus"
                 onChange={formik.handleChange}
                 input={<Input label="Membership Status" />}
-                value={formik.values?.memberStatus || ''}
+                value={formik.values?.membershipStatus || ''}
                 error={
-                    formik.touched.memberStatus &&
-                    Boolean(formik.errors.memberStatus)
+                    formik.touched.membershipStatus &&
+                    Boolean(formik.errors.membershipStatus)
                 }
                 helpertext={
-                    formik.touched.memberStatus &&
-                    formik.errors.memberStatus
+                    formik.touched.membershipStatus &&
+                    formik.errors.membershipStatus
                 }
-                input={
-                    <Input
-                        label="Gender"
-                        startAdornment={
-                            <InputAdornment position="start">
-                                <FaIcons.FaCircle />
-                            </InputAdornment>
-                        }
-                    />
-                }
-                size="small"
+             
             >
                 <MenuItem value="Full Member">
                     Full Member
@@ -478,14 +480,14 @@ const AddMemberForm = () => {
                 id="demo-multiple-checkbox"
                 multiple
                 value={mRole}
-                name="memberRole"
+                name="role"
                 error={
-                    formik.touched.memberRole &&
-                    Boolean(formik.errors.memberRole)
+                    formik.touched.role &&
+                    Boolean(formik.errors.role)
                 }
                 helpertext={
-                    formik.touched.memberRole &&
-                    formik.errors.memberRole
+                    formik.touched.role &&
+                    formik.errors.role
                 }
                 onChange={(e) => handleMultiChange(e, setMRole)}
                 input={
@@ -543,10 +545,13 @@ const AddMemberForm = () => {
                         }
                     />
                 }
-                size="small"
+               
             >
                 <MenuItem disabled value="">
                     Select class leader
+                </MenuItem>
+                <MenuItem value="Yaw Boateng">
+                Yaw Boateng
                 </MenuItem>
                 <MenuItem value="6192220b404220391b9fc921">
                     Not assinged
@@ -557,7 +562,51 @@ const AddMemberForm = () => {
      
     </Grid>
     <Grid item lg={4} md={4} sm={4} xs={12}>
-        <FormControl fullWidth>
+    <FormControl variant="standard" fullWidth>
+            <InputLabel htmlFor="input-with-icon-adornment">
+            Organisation
+            </InputLabel>
+            <Select
+                fullWidth
+                labelId="OrganisationId"
+                size="small"
+                id="OrganisationId"
+                multiple
+                value={orgs}
+                name="organisation"
+                error={
+                    formik.touched.organisation &&
+                    Boolean(formik.errors.organisation)
+                }
+                helpertext={
+                    formik.touched.organisation &&
+                    formik.errors.organisation
+                }
+                onChange={(e) => handleMultiChange(e, setOrgs)}
+                input={
+                    <Input
+                    label="Organisation"
+                        startAdornment={
+                            <InputAdornment position="start">
+                                <FaIcons.FaUserTie />
+                            </InputAdornment>
+                        }
+                    />
+                }
+                renderValue={(selected) => selected.join(', ')}
+                // MenuProps={MenuProps}
+            >
+                {defaultOrgs.map((name) => (
+                    <MenuItem key={name} value={name}>
+                        <Checkbox
+                            checked={orgs.indexOf(name) > -1}
+                        />
+                        <ListItemText primary={name} />
+                    </MenuItem>
+                ))}
+            </Select>
+        </FormControl>
+        {/* <FormControl fullWidth>
             <InputLabel id="OrganisationId">
                 <FaIcons.FaUsers /> Organisation
             </InputLabel>
@@ -585,7 +634,7 @@ const AddMemberForm = () => {
                 <MenuItem value="Guild">Guild</MenuItem>
                 <MenuItem value="NA">No organisation</MenuItem>
             </Select>
-        </FormControl>
+        </FormControl> */}
     </Grid>
 
     <Grid item lg={4} md={4} sm={4} xs={12}>
@@ -618,30 +667,32 @@ const AddMemberForm = () => {
 </Grid>
 <Grid container spacing={6}>
     <Grid item lg={4} md={4} sm={4} xs={12}>
-        <TextField
-            className="mb-4 w-full"
-            label="Contact Name"
-            type="text"
-            name="emergencyContactName"
-            size="small"
-            onChange={formik.handleChange}
-            value={formik.values?.emergencyContactName || ''}
-            error={
-                formik.touched.emergencyContactName &&
-                Boolean(formik.errors.emergencyContactName)
-            }
-            helpertext={
-                formik.touched.emergencyContactName &&
-                formik.errors.emergencyContactName
-            }
-            InputProps={{
-                startAdornment: (
+    <FormControl variant="standard" fullWidth>
+            <InputLabel htmlFor="input-with-icon-adornment">
+            Contact Name
+            </InputLabel>
+            <Input
+                id="input-with-icon-adornment"
+                startAdornment={
                     <InputAdornment position="start">
                         <FaIcons.FaUser />
                     </InputAdornment>
-                ),
-            }}
-        />
+                }
+                name="emergencyName"
+                onChange={formik.handleChange}
+                value={formik.values?.emergencyName || ''}
+            error={
+                formik.touched.emergencyName &&
+                Boolean(formik.errors.emergencyName)
+            }
+            helpertext={
+                formik.touched.emergencyName &&
+                formik.errors.emergencyName
+            }
+                size="small"
+            />
+        </FormControl>
+       
     </Grid>
     <Grid item lg={4} md={4} sm={4} xs={12}>
         <FormControl fullWidth>
@@ -673,7 +724,7 @@ const AddMemberForm = () => {
                         }
                     />
                 }
-                size="small"
+               
             >
                 <MenuItem disabled value="">
                     Select relation
@@ -755,7 +806,7 @@ const AddMemberForm = () => {
                                 formik.touched.firstName &&
                                 Boolean(formik.errors.firstName)
                             }
-                            helperText={
+                            helpertext={
                                 formik.touched.firstName &&
                                 formik.errors.firstName
                             }
@@ -782,7 +833,7 @@ const AddMemberForm = () => {
                                 formik.touched.lastName &&
                                 Boolean(formik.errors.lastName)
                             }
-                            helperText={
+                            helpertext={
                                 formik.touched.lastName &&
                                 formik.errors.lastName
                             }
@@ -808,7 +859,7 @@ const AddMemberForm = () => {
                                 formik.touched.others &&
                                 Boolean(formik.errors.others)
                             }
-                            helperText={
+                            helpertext={
                                 formik.touched.others && formik.errors.others
                             }
                         />
@@ -1010,16 +1061,16 @@ const AddMemberForm = () => {
                                 id="msId"
                                 size="small"
                                 label="Membership Status"
-                                name="memberStatus"
+                                name="membershipStatus"
                                 onChange={formik.handleChange}
-                                value={formik.values?.memberStatus || ''}
+                                value={formik.values?.membershipStatus || ''}
                                 error={
-                                    formik.touched.memberStatus &&
-                                    Boolean(formik.errors.memberStatus)
+                                    formik.touched.membershipStatus &&
+                                    Boolean(formik.errors.membershipStatus)
                                 }
                                 helpertext={
-                                    formik.touched.memberStatus &&
-                                    formik.errors.memberStatus
+                                    formik.touched.membershipStatus &&
+                                    formik.errors.membershipStatus
                                 }
                             >
                                 <MenuItem value="Full Member">
@@ -1043,16 +1094,16 @@ const AddMemberForm = () => {
                                 size="small"
                                 label="Role"
                                 multiple
-                                name="memberRole"
+                                name="role"
                                 onChange={(e) =>handleMultiChange(e,setMRole)}
                                 value={mRole}
                                 error={
-                                    formik.touched.memberRole &&
-                                    Boolean(formik.errors.memberRole)
+                                    formik.touched.role &&
+                                    Boolean(formik.errors.role)
                                 }
                                 helpertext={
-                                    formik.touched.memberRole &&
-                                    formik.errors.memberRole
+                                    formik.touched.role &&
+                                    formik.errors.role
                                 }
                             >
                                 <MenuItem value="Leader">Leader</MenuItem>
@@ -1171,17 +1222,17 @@ const AddMemberForm = () => {
                             className="mb-4 w-full"
                             label="Contact Name"
                             type="text"
-                            name="emergencyContactName"
+                            name="emergencyName"
                             size="small"
                             onChange={formik.handleChange}
-                            value={formik.values?.emergencyContactName ||''}
+                            value={formik.values?.emergencyName ||''}
                             error={
-                                formik.touched.emergencyContactName &&
-                                Boolean(formik.errors.emergencyContactName)
+                                formik.touched.emergencyName &&
+                                Boolean(formik.errors.emergencyName)
                             }
                             helpertext={
-                                formik.touched.emergencyContactName &&
-                                formik.errors.emergencyContactName
+                                formik.touched.emergencyName &&
+                                formik.errors.emergencyName
                             }
                             InputProps={{
                                 startAdornment: (

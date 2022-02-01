@@ -67,6 +67,8 @@ const Layout1Topbar = () => {
     const classes = useStyles()
     const { settings, updateSettings } = useSettings()
     const { logout, user } = useAuth()
+
+    console.log({user})
     const isMdScreen = useMediaQuery(theme.breakpoints.down('md'))
     const fixed = settings?.layout1Settings?.topbar?.fixed
 
@@ -138,7 +140,7 @@ const Layout1Topbar = () => {
                                 <div className={classes.userMenu}>
                                     <Hidden xsDown>
                                         <span>
-                                            Hi <strong>{user.name}</strong>
+                                            Hi <strong>{user.username}</strong>
                                         </span>
                                     </Hidden>
                                     <Avatar

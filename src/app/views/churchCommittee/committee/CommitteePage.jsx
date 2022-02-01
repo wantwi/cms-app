@@ -5,7 +5,7 @@ import { Breadcrumb } from 'app/components'
 import {useDispatch,useSelector} from "react-redux"
 import ClassTable from 'app/components/tables/ClassTable'
 import CommitteeTable from 'app/components/tables/CommitteeTable'
-import {getCommittees,getMemberInfo,addCommitteeMembers} from "../../../redux/adultService/AdultServiceActions"
+import {getCommittees,getMemberInfo,addCommitteeMembers,toggleForm} from "../../../redux/adultService/AdultServiceActions"
 import DisplayMemberTable from 'app/components/tables/DisplayMemberTable'
 import FormModal from 'app/components/CustomizedDialog/FormModal'
 import SelectionTable from 'app/components/tables/SelectionTable'
@@ -28,13 +28,20 @@ function CommitteePage() {
   })
     
      dispatch(addCommitteeMembers(committee._id,values))
+
+     setisOpen(false)
   }
 
+  
  
 
     useEffect(() => {
         dispatch(getCommittees())
         dispatch(getMemberInfo())
+
+        return ()=>{
+            setisOpen(false)
+        }
        }, [])
 
     return (

@@ -14,7 +14,8 @@ const {
     ADD_COMMITTEE,
     GET_COMMITTEES,
     SET_COMMITTEE,
-    GET_COMMITTEE_MEMBERS
+    GET_COMMITTEE_MEMBERS,
+    SET_UPLOADED_IMAGE
 } = ActionTypes
 const INITIAL_MEMBER_FROM = {
     firstName: '',
@@ -35,6 +36,7 @@ const INITIAL_MEMBER_FROM = {
     memberStatus: '',
     relation: '',
     organisation: [],
+    
 }
 
 const initialState = {
@@ -111,6 +113,13 @@ const AdultServiceReducer = function (state = initialState, action) {
             return {
                 ...state,
                 committeeMembers:action.payload
+            }
+        }
+        case SET_UPLOADED_IMAGE:{
+            return {
+                ...state,
+                memberInfo: { ...state.memberInfo.image = action.payload },
+               
             }
         }
 

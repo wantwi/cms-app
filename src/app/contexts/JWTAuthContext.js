@@ -43,12 +43,13 @@ const reducer = (state, action) => {
             }
         }
         case 'LOGIN': {
-            const { user } = action.payload
+            // const { user } = action.payload
 
+            console.log(action.payload)
             return {
                 ...state,
                 isAuthenticated: true,
-                user,
+                user: action.payload,
             }
         }
         case 'LOGOUT': {
@@ -84,24 +85,37 @@ const AuthContext = createContext({
 export const AuthProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState)
 
-    const login = async (email, password) => {
-        const response = await axios.post('http://localhost:6200/api-v1/login', {
-            email,
+    const login = async (username, password) => {
+        // const response = await axios.post('http://localhost:6200/api-v1/login', {
+        //     email,
+        //     password,
+        // })
+        const response = await axios.post('http://localhost:8080/api/login', {
+            username,
             password,
         })
 
 
+
+       
       
         const { token: accessToken } = response.data
 
         const decodedToken = jwtDecode(accessToken)
+
+        console.log({decodedToken})
+
+       // return
+
+        // decodedToken.name = decodedToken.username;
+        // const {username:name} = decodedToken
 
         setSession(accessToken)
 
         dispatch({
             type: 'LOGIN',
             payload: {
-                user:decodedToken?.name,
+                user:decodedToken,
             },
         })
     }
@@ -131,7 +145,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        ;(async () => {
+        (async () => {
             try {
                 const accessToken = window.localStorage.getItem('accessToken')
 
@@ -146,7 +160,7 @@ export const AuthProvider = ({ children }) => {
                         type: 'INIT',
                         payload: {
                             isAuthenticated: true,
-                            user:decodedToken?.name,
+                            user:decodedToken,
                         },
                     })
                 } else {

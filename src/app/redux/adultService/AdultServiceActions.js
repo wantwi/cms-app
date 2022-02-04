@@ -249,15 +249,18 @@ export const selecedRow =(data)=> async(dispatch)=>{
         payload: data,
     })
     try {
-        const request = await axios.get(`http://localhost:8080/api/committee/${data._id}/members`)
-        console.log({request})
+        const request = await axios.get(`http://localhost:8080/api/committee/${data.id}/members`)
+        
+        let members = request.data.map(x => x.person)
+
+       
         if(!request){
                 throw 'Something went wrong'
         }
 
         dispatch({
             type:ActionTypes.GET_COMMITTEE_MEMBERS,
-            payload: request.data,
+            payload: members,
         })
 
     } catch (error) {

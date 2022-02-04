@@ -71,9 +71,10 @@ export const getMemberById =  (id) => async  (dispatch) => {
 export const removeMember =  (id) => async  (dispatch) => {
 
     try {
-        const request = await axios.delete(`http://localhost:6200/api-v1/members/${id}/delete`)
+        const request = await axios.delete(`http://localhost:8080/api/person/${id}`)
         if(!request) return
-        //dispatch(getMemberInfo())
+
+        dispatch(getMemberInfo())
         
     } catch (error) {
         console.log({error});
@@ -112,21 +113,38 @@ export const resetMemberInfo = () => async (dispatch)=>{
 
 export const registerMember =  (data) => async  (dispatch) => {
 
+   
+    let fd = new FormData();
+    fd.append('image',data.image)
+    fd.append('firstName',data.firstName)
+    fd.append('lastName',data.lastName)
+    fd.append('gender',data.gender)
+    fd.append('others',data.others)
+    fd.append('birthDate',data.birthDate)
+    fd.append('marritalStatus',data.marritalStatus)
+    fd.append('occupation',data.occupation)
+    fd.append('location',data.location)
+    fd.append('classLeader',data.classLeader)
+    fd.append('role',data.role)
+    fd.append('organisation',data.organisation)
+    fd.append('emergencyName',data.emergencyName)
+    fd.append('yearofJoining',data.yearofJoining)
+    fd.append('address',data.address)
+    fd.append('phoneNumber',data.phoneNumber)
   
 
+
+ 
     try {
        // const request = await axios.post(`http://localhost:6200/api-v1/member/register`,data)
 
-        const request = await axios.post(`http://localhost:8080/api/person/0`,data, {
+       //fd.append("data",Jso)
+
+        const request = await axios.post(`http://localhost:8080/api/person/0`,fd, {
             headers: {
-              'Content-Type': 'multipart/form-data'
+              'Content-Type': 'multipart/form-data',
             }
         })
-
-        console.log({request})
-
-        return
-
 
         if(!request) return
         dispatch(getMemberInfo())
@@ -138,25 +156,21 @@ export const registerMember =  (data) => async  (dispatch) => {
 }
 
 
-export const setUploadImage = (data) => async (dispatch)=>{
-    dispatch({
-        type:ActionTypes.SET_UPLOADED_IMAGE,
-        payload:data
-      
-    })
-}
+
 
 export const updateMember =  (id,data) => async  (dispatch) => {
 
+    delete data.image
+  
     try {
-        const request = await axios.put(`http://localhost:6200/api-v1/members/${id}/update`,data)
+        const request = await axios.put(`http://localhost:8080/api/person/${id}`,data)
 
 
         if(!request) return
         //
          dispatch({
         type: ActionTypes.TOGGLE_FORM})
-        setTimeout(()=> dispatch(getMemberInfo()),10)
+        setTimeout(()=> dispatch(getMemberInfo()),100)
 
       //  dispatch(getMemberInfo())
     } catch (error) {
@@ -168,7 +182,7 @@ export const updateMember =  (id,data) => async  (dispatch) => {
 export const addCommittee =(data)=> async(dispatch)=>{
 
     try {
-        const request = await axios.post(`http://localhost:6200/api-v1/committee`,data)
+        const request = await axios.post(`http://localhost:8080/api/committee`,data)
 
         if(!request) {
             throw 'Something went wrong'
@@ -192,12 +206,14 @@ export const addCommittee =(data)=> async(dispatch)=>{
 export const getCommittees =  () => async  (dispatch) => {
 
     try {
-        const request = await axios.get('http://localhost:6200/api-v1/committee')
+        const request = await axios.get('http://localhost:8080/api/committees')
+
+        console.log({request})
       
         if(!request) return
         dispatch({
             type:ActionTypes.GET_COMMITTEES,
-            payload: request.data.data,
+            payload: request.data,
         })
     } catch (error) {
         console.log({error});
@@ -206,10 +222,19 @@ export const getCommittees =  () => async  (dispatch) => {
 
 
 export const addCommitteeMembers =(id,data)=> async(dispatch)=>{
+
+   
     try {
-        const request = await axios.post(`http://localhost:6200/api-v1/committee/${id}/members`,data)
+        if(data.length == 0){
+
+            return
+        } 
+        const request = await axios.post(`http://localhost:8080/api/committee/${id}/members`,data)
       
         if(!request) return
+
+        console.log({request})
+        return
         dispatch(getCommitteeMembersByCommitteeId(id))
     } catch (error) {
         console.log({error});
@@ -224,7 +249,7 @@ export const selecedRow =(data)=> async(dispatch)=>{
         payload: data,
     })
     try {
-        const request = await axios.get(`http://localhost:6200/api-v1/committee/${data._id}/member`)
+        const request = await axios.get(`http://localhost:8080/api/committee/${data._id}/members`)
         console.log({request})
         if(!request){
                 throw 'Something went wrong'
@@ -232,7 +257,7 @@ export const selecedRow =(data)=> async(dispatch)=>{
 
         dispatch({
             type:ActionTypes.GET_COMMITTEE_MEMBERS,
-            payload: request.data.data,
+            payload: request.data,
         })
 
     } catch (error) {
@@ -247,7 +272,7 @@ export const selecedRow =(data)=> async(dispatch)=>{
 export const getCommitteeMembersByCommitteeId =(id)=> async(dispatch)=>{
 
     try {
-        const request = await axios.get(`http://localhost:6200/api-v1/committee/${id}/member`)
+        const request = await axios.get(`http://localhost:8080/api/committee/${id}/member`)
         console.log({request})
       
         if(!request){

@@ -63,7 +63,7 @@ function CustomTableComponent({ data }) {
 
     const statusTemplate = ({ status }) => {
         return status === 1 ? (
-            <span variant="contained"  style={{background:"#0cc143", margin:0, padding:"5px 10px",width:100, color:"#fff"}}>
+            <span variant="contained"  style={{background:"#0cc143",borderRadius:'5px', margin:0, padding:"5px 10px",width:100, color:"#fff"}}>
                 Active
             </span>
         ) : (

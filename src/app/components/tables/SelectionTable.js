@@ -106,7 +106,7 @@ function SelectionTable({ data,selectionGrid}) {
                     width="70"
                     textAlign="Center"
                 />
-                <ColumnDirective visible={false} headerText="ID" field="_id" width="120" />
+                <ColumnDirective visible={false} headerText="ID" field="id" width="120" />
                 <ColumnDirective
                     headerText="Name"
                     field="firstName"
@@ -115,7 +115,7 @@ function SelectionTable({ data,selectionGrid}) {
                 />
                 <ColumnDirective
                     headerText="Phone Number"
-                    field="mobileNumber"
+                    field="phoneNumber"
                     width="100"
                     format="C2"
                 />
@@ -130,7 +130,7 @@ function SelectionTable({ data,selectionGrid}) {
                     headerText="Action"
                     width="100"
                     template={commands}
-                    field="_id"
+                    field="id"
                     visible={false}
                 />
             </ColumnsDirective>

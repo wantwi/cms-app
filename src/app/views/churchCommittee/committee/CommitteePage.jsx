@@ -22,12 +22,10 @@ function CommitteePage() {
   }
   const saveActionHandler =()=>{
 
-    let values = []
-  selectionGrid.current.getSelectedRecords().map(x =>{
-    values.push({member:x.id, isLeader:false})
-  })
+   
+    let values = selectionGrid.current.getSelectedRecords().map(x =>({memberId:x.id}))
     
-     dispatch(addCommitteeMembers(committee._id,values))
+     dispatch(addCommitteeMembers(committee.id,values))
 
      setisOpen(false)
   }

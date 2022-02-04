@@ -127,7 +127,7 @@ function DisplayMemberTable({ data,toggleModal,open }) {
                     width="70"
                     textAlign="Center"
                 />
-                <ColumnDirective visible={false} headerText="ID" field="_id" width="120" />
+                <ColumnDirective visible={false} headerText="ID" field="id" width="120" />
                 <ColumnDirective
                     headerText="Name"
                     field="firstName"
@@ -136,7 +136,7 @@ function DisplayMemberTable({ data,toggleModal,open }) {
                 />
                 <ColumnDirective
                     headerText="Phone Number"
-                    field="mobileNumber"
+                    field="phoneNumber"
                     width="100"
                     format="C2"
                 />
@@ -150,7 +150,7 @@ function DisplayMemberTable({ data,toggleModal,open }) {
                     headerText="Action"
                     width="100"
                     template={commands}
-                    field="_id"
+                    field="id"
                 />
             </ColumnsDirective>
             <Inject services={[Page, Toolbar, ExcelExport, PdfExport, Group]} />

@@ -44,7 +44,7 @@ const ImagePreviewComponent = ({imageUploadBtn,imageChange,selectedImage,removeS
                         alt=""
                     />
                     {
-                      selectedImage?   <Icon color="error" onClick={removeSelectedImage}   style={styles.icon} >delete</Icon> :  <Icon onClick={()=>imageUploadBtn.current.click()}  style={styles.icon} >add_a_photo</Icon>
+                      memberInfo?.firstName ? null : selectedImage?   <Icon color="error" onClick={removeSelectedImage}   style={styles.icon} >delete</Icon> :  <Icon onClick={()=>imageUploadBtn.current.click()}  style={styles.icon} >add_a_photo</Icon>
                     }
                    
                 </div>

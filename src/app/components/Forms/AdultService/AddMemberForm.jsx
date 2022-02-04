@@ -106,12 +106,8 @@ const AddMemberForm = ({imageUploadBtn}) => {
             values.organisation = orgs.toString()
             values.role = mRole.toString()
             values.image = imageUploadBtn.current.files[0]
-            console.log(imageUploadBtn.current.files[0])
-            console.log({values})
-           
-            return
-            //values.image = imageUploadBtn.current.files[0]
-//imageUploadBtn
+        
+          
             {
                 active ? (values.status = 1) : (values.status = 0)
             }

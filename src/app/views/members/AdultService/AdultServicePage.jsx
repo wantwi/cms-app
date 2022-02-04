@@ -120,8 +120,6 @@ function AdultServicePage() {
 
             return () => {
                 dispatch(toggleForm())
-            
-               
             }
            
         }, [])

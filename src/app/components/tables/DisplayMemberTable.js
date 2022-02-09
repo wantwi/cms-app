@@ -13,50 +13,53 @@ import {
 } from '@syncfusion/ej2-react-grids'
 import { Icon, Button, IconButton, Fab } from '@material-ui/core'
 import Image from '../../views/members/001-man.svg'
+import {useDispatch,useSelector} from "react-redux"
+import {getCommittees,getMemberInfo,addCommitteeMembers,toggleForm} from "../../redux/adultService/AdultServiceActions"
 
 
-
-const removeExtraSpaces = (string) => {
-    return string.replace(/\s+/g,' ').trim();
- }
-
- const ImageTemplate = () => {
-    return (
-        <div className="p-0 m-0">
-            <img
-                style={{
-                    width: '45px',
-                    height: '45px',
-                    padding: 0,
-                    margin: '0 auto',
-                }}
-                src={Image}
-                alt="image"
-            />
-        </div>
-    )
-}
-
-const NameTemplate = ({firstName,lastName,others}) => {
-
-    return others? removeExtraSpaces(`${firstName} ${others} ${lastName}`) :  removeExtraSpaces(`${firstName} ${lastName}`)
-
-     
-}
-const statusTemplate = ({ status }) => {
-    return status === 1 ? (
-        <span variant="contained"  style={{background:"#4afb00a1", margin:0, padding:"5px 15px",width:120,borderRadius: 10, color:"#fff"}}>
-            Active
-        </span>
-    ) : (
-        <span variant="contained" style={{background:"#fb00008c",borderRadius: 10, margin:0, padding:"5px 10px",width:100, color:"#fff"}} >Inactive</span>
-    )
-}
 
 
 function DisplayMemberTable({ data,toggleModal,open }) {
-    console.log({data})
+    const dispatch = useDispatch()
     const grid = useRef(null)
+
+    const removeExtraSpaces = (string) => {
+        return string.replace(/\s+/g,' ').trim();
+     }
+    
+     const ImageTemplate = () => {
+        return (
+            <div className="p-0 m-0">
+                <img
+                    style={{
+                        width: '45px',
+                        height: '45px',
+                        padding: 0,
+                        margin: '0 auto',
+                    }}
+                    src={Image}
+                    alt="image"
+                />
+            </div>
+        )
+    }
+    
+    const NameTemplate = ({firstName,lastName,others}) => {
+    
+        return others? removeExtraSpaces(`${firstName} ${others} ${lastName}`) :  removeExtraSpaces(`${firstName} ${lastName}`)
+    
+         
+    }
+    const statusTemplate = ({ status }) => {
+        return status === 1 ? (
+            <span variant="contained"  style={{background:"#4afb00a1", margin:0, padding:"5px 15px",width:120,borderRadius: 10, color:"#fff"}}>
+                Active
+            </span>
+        ) : (
+            <span variant="contained" style={{background:"#fb00008c",borderRadius: 10, margin:0, padding:"5px 10px",width:100, color:"#fff"}} >Inactive</span>
+        )
+    }
+
 
     const toolbarClick = (args) => {
         console.log({ grid })

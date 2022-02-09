@@ -17,7 +17,8 @@ export const ActionTypes = {
     SET_COMMITTEE:"SET_COMMITTEE",
     GET_COMMITTEE_MEMBERS:'GET_COMMITTEE_MEMBERS',
     ADD_COMMITTEE_MEMBERS:"ADD_COMMITTEE_MEMBERS",
-    SET_UPLOADED_IMAGE:"SET_UPLOADED_IMAGE"
+    SET_UPLOADED_IMAGE:"SET_UPLOADED_IMAGE",
+    GET_NON_COMMITTEE_MEMBERS:"GET_NON_COMMITTEE_MEMBERS"
 
 }
 
@@ -257,6 +258,7 @@ export const selecedRow =(data)=> async(dispatch)=>{
         if(!request){
                 throw 'Something went wrong'
         }
+        dispatch(getNonCommitteeMembers(data.id))
 
         dispatch({
             type:ActionTypes.GET_COMMITTEE_MEMBERS,
@@ -267,10 +269,25 @@ export const selecedRow =(data)=> async(dispatch)=>{
         console.log({error});
     }
 
-   
-
 }
 
+ const getNonCommitteeMembers=(id) =>async (dispatch)=>{
+    try {
+        const request = await axios.get(`http://localhost:8080/api/committee/${id}/nonmembers`)
+
+        console.log({request})
+
+        dispatch({
+            type:ActionTypes.GET_NON_COMMITTEE_MEMBERS,
+            payload: request.data,
+        })
+
+        
+    } catch (error) {
+        
+    }
+
+}
 
 export const getCommitteeMembersByCommitteeId =(id)=> async(dispatch)=>{
 

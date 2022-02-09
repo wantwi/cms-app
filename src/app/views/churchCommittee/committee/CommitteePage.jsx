@@ -12,9 +12,10 @@ import SelectionTable from 'app/components/tables/SelectionTable'
 
 function CommitteePage() {
     const dispatch = useDispatch()
-    const {committees,committeeMembers,committee,membersInfo} = useSelector(state =>state.adultService)
+    const {committees,committeeMembers,committee,nonCommitteeMembers} = useSelector(state =>state.adultService)
     const [isOpen, setisOpen] = useState(false)
     const selectionGrid = useRef(null)
+
 
 
   const toggleModal = ()=>{
@@ -30,12 +31,15 @@ function CommitteePage() {
      setisOpen(false)
   }
 
-  
  
+  console.log({committeeMembers})
+
+
 
     useEffect(() => {
         dispatch(getCommittees())
-        dispatch(getMemberInfo())
+      //  dispatch(getMemberInfo())
+       
 
         return ()=>{
             setisOpen(false)
@@ -67,7 +71,7 @@ function CommitteePage() {
                 </Grid>
             </Grid>
             <FormModal  open={isOpen}  title ={`Add to ${committee.name} Committee`} toggleModal = {toggleModal} saveActionHandler ={saveActionHandler}>
-           <SelectionTable selectionGrid = {selectionGrid} data ={membersInfo}/>
+           <SelectionTable selectionGrid = {selectionGrid} data ={nonCommitteeMembers}/>
             </ FormModal>
         </div>
     )

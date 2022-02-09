@@ -12,11 +12,24 @@ import {
 } from '@syncfusion/ej2-react-grids'
 
 
-export const OperationTable = () => {
+
+export const OperationTable = ({toggleModal}) => {
   const grid = useRef(null)
 
-    const toolbarClick = (args) => {
-        console.log({ grid })
+ 
+
+  const actionComplete =(args)=>{
+      //  console.log({args});
+  }
+  const actionBegin =(args)=>{
+   if(args?.requestType ==="add"){
+       args.cancel = true
+       toggleModal()
+   }
+  }
+
+const toolbarClick = (args) => {
+       
         if (grid && args.item.id.includes('excelexport')) {
             // grid.current.columns[0].visible = false
             // grid.current.columns[4].visible = false
@@ -35,9 +48,17 @@ export const OperationTable = () => {
             allowGrouping={true}
             allowExcelExport={true}
             allowPdfExport={true}
+            editSettings={{
+                allowEditing: true,
+                allowAdding: true,
+                allowDeleting: true,
+                newRowPosition: 'Top',
+            }}
             height={365}
-            toolbar={['ExcelExport', 'PdfExport']}
+            toolbar={['Add', 'Edit', 'Delete', 'ExcelExport', 'PdfExport']}
             toolbarClick={toolbarClick}
+            actionComplete={actionComplete}
+            actionBegin={actionBegin}
            ref={grid}
             gridLines="Both"
         >

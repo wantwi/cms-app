@@ -13,7 +13,7 @@ import {
 
 
 
-export const OperationTable = ({toggleModal}) => {
+export const OperationTable = ({data,toggleModal}) => {
   const grid = useRef(null)
 
  
@@ -43,7 +43,7 @@ const toolbarClick = (args) => {
 
     return (
         <GridComponent
-            dataSource={[]}
+            dataSource={data}
             allowPaging={true}
             allowGrouping={true}
             allowExcelExport={true}
@@ -73,28 +73,28 @@ const toolbarClick = (args) => {
                     columns={[
                         {
                             field: 'week1',
-                            headerText: 'WEEK 1',
+                            headerText: 'Week 1',
 
                             width: 100,
                         },
                         {
                             field: 'week2',
-                            headerText: 'WEEK 2',
+                            headerText: 'Week 2',
                             width: 100,
                         },
                         {
                             field: 'week3',
-                            headerText: 'WEEK 3',
+                            headerText: 'Week 3',
                             width: 100,
                         },
                         {
                             field: 'week4',
-                            headerText: 'WEEK 4',
+                            headerText: 'Week 4',
                             width: 100,
                         },
                         {
                             field: 'week5',
-                            headerText: 'WEEK 5',
+                            headerText: 'Week 5',
                             width: 100,
                         },
                     ]}
@@ -103,7 +103,7 @@ const toolbarClick = (args) => {
                 ></ColumnDirective>
                 <ColumnDirective
                     headerText="Total"
-                    field="number"
+                    field="total"
                     width="100"
                   
                 />

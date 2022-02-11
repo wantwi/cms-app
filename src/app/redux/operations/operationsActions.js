@@ -94,17 +94,35 @@ export const deleteOperationTypes=  (data) => async  (dispatch) => {
 
 export const getOperations=  (month,year) => async  (dispatch) => {
 
+
+    
     try {
         const request = await axios.get(`http://localhost:8080/api/operation/${month}/${year}`)
-        console.log({request})
 
-        return
+      
        
         if(!request) return
+
+        if(!request.data[0].id){
+            return
+        }
         dispatch({
-            type:OperationActionTypes.GET_OPERATION_TYPES,
+            type:OperationActionTypes.GET_OPERATION,
             payload: request.data,
         })
+       
+    } catch (error) {
+        console.log({error});
+    }
+}
+
+export const addOperation=  (data) => async  (dispatch) => {
+    
+    try {
+        const request = await axios.post(`http://localhost:8080/api/operation`,data)
+       
+        if(!request) return
+        dispatch(getOperationTypes())
     } catch (error) {
         console.log({error});
     }

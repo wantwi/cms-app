@@ -5,26 +5,30 @@ import AddOperationTable from 'app/components/tables/AddOperationTable'
 import OperationTable from 'app/components/tables/operationTable'
 import FormModal from 'app/components/CustomizedDialog/FormModal'
 import {useDispatch,useSelector} from "react-redux"
-import { getActiveOperationTypes,getOperations } from 'app/redux/operations/operationsActions'
+import { getActiveOperationTypes,getOperations,addOperation } from 'app/redux/operations/operationsActions'
 
 
 function ViewOperationPage() {
     const [isOpen, setisOpen] = useState(false)
+   // const [year, setYear] = useState("")
+   //const [month, setMonth] = useState("")
 
-    const {operationTypes} = useSelector(state => state.churchOperation)
+    const {operationTypes,operations} = useSelector(state => state.churchOperation)
 
     const dispatch = useDispatch()
     const selectionGrid = useRef(null)
-    const month =  useRef("")
-    const year =  useRef("")
+  const month =  useRef("")
+  const year =  useRef("")
    
-    const handleChange = ()=>{
+    const handleChange = (e)=>{
 
-        (month.current.value && year.current.value) ??  dispatch(getOperations( month.current.value,year.current.value)) 
-         
-
-       
+        if(year.current.value !="Select Year" && month.current.value !="Select Month" ){
+            dispatch(getOperations(month.current.value,year.current.value))
+        }
     }
+
+
+
 
     const toggleModal = ()=>{
         setisOpen(!isOpen)
@@ -36,19 +40,22 @@ function ViewOperationPage() {
         let values = selectionGrid.current.dataSource.map((y) => {
             const { week1, week2, week3, week4, week5 } = y;
            return {
-              id: operationTypes.find((x) => x.name === y.name).id,
+            operationId: operationTypes.find((x) => x.name === y.name).id,
               week1: +week1,
               week2: +week2,
               week3: +week3,
               week4: +week4,
               week5: +week5,
+              month:month.current.value,
+              year:year.current.value
             };
             
           });
         console.log({values})
-         //dispatch(addCommitteeMembers(committee.id,values))
+         dispatch(addOperation(values))
     
          setisOpen(false)
+         dispatch(getOperations(month.current.value,year.current.value))
       }
 
       useEffect(() => {
@@ -76,21 +83,21 @@ function ViewOperationPage() {
             <Grid container spacing={3}>
                 <Grid item lg={12} md={12} sm={12} xs={12}>
                     <Card className="px-6 pt-2 pb-4 mb-3" raised>
-                        <select ref={month} onChange={handleChange}>
-                            <option>Select Month</option>
-                            <option>Jan</option>
-                            <option>Feb</option>
-                            <option>March</option>
-                            <option>April</option>
-                            <option>May</option>
+                        <select ref={month}  name='month'  onChange={handleChange}>
+                            <option value="">Select Month</option>
+                            <option value="Jan">Jan</option>
+                            <option value="Feb">Feb</option>
+                            <option value="March">March</option>
+                            <option value="April">April</option>
+                            <option value="May">May</option>
                         </select>
-                        <select ref={year} onChange={handleChange}>
+                        <select ref={year}   name='year'   onChange={handleChange}>
                             <option>Select Year</option>
                             <option>2021</option>
                             <option>2022</option>
                             <option>2023</option>
                         </select>
-                        <OperationTable toggleModal = {toggleModal} />
+                        <OperationTable data={operations} toggleModal = {toggleModal} />
                     </Card>
                 </Grid>
             </Grid>

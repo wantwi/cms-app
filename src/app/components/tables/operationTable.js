@@ -8,31 +8,59 @@ import {
     Toolbar,
     Group,
     Edit,
-    GridLine
+    CommandColumn
 } from '@syncfusion/ej2-react-grids'
+import {useDispatch} from 'react-redux'
+import {deleteOperation,updateOperation, OperationActionTypes} from "../../redux/operations/operationsActions"
 
 
 
-export const OperationTable = ({data,toggleModal}) => {
+
+export const OperationTable = ({month,year,data,toggleModal}) => {
   const grid = useRef(null)
+  const dispatch = useDispatch();
+
+  const commands = [{ type: 'Edit', buttonOption: { iconCss: ' e-icons e-edit', cssClass: 'e-flat' } },
+  { type: 'Delete', buttonOption: { iconCss: 'e-icons e-delete', cssClass: 'e-flat' } },
+  { type: 'Save', buttonOption: { iconCss: 'e-icons e-update', cssClass: 'e-flat' } },
+  { type: 'Cancel', buttonOption: { iconCss: 'e-icons e-cancel-icon', cssClass: 'e-flat' } }];
 
  
 
   const actionComplete =(args)=>{
-      //  console.log({args});
+   
+        if(args.requestType === "save"){
+
+            console.log(args.data);
+           
+            dispatch(updateOperation({
+                type:OperationActionTypes.UPDATE_OPERATION,
+                payload:{data: args.data,month:month.current.value,year:year.current.value}
+            }))
+        }
+        
+        if(args.requestType === "delete"){
+            console.log(args.data);
+            dispatch(deleteOperation({
+                type:OperationActionTypes.DELETE_OPERATION,
+                payload:{data: args.data,month:month.current.value,year:year.current.value}
+            }))
+        }
   }
   const actionBegin =(args)=>{
    if(args?.requestType ==="add"){
        args.cancel = true
-       toggleModal()
+
+       if(year.current.value !="Select Year" && month.current.value !="Select Month" ){
+        toggleModal()
+        }
+      
    }
   }
 
 const toolbarClick = (args) => {
        
         if (grid && args.item.id.includes('excelexport')) {
-            // grid.current.columns[0].visible = false
-            // grid.current.columns[4].visible = false
             grid.current.excelExport()
         }
         if (grid && args.item.id.includes('pdfexport')) {
@@ -45,7 +73,6 @@ const toolbarClick = (args) => {
         <GridComponent
             dataSource={data}
             allowPaging={true}
-            allowGrouping={true}
             allowExcelExport={true}
             allowPdfExport={true}
             editSettings={{
@@ -55,7 +82,7 @@ const toolbarClick = (args) => {
                 newRowPosition: 'Top',
             }}
             height={365}
-            toolbar={['Add', 'Edit', 'Delete', 'ExcelExport', 'PdfExport']}
+            toolbar={['Add','ExcelExport', 'PdfExport']}
             toolbarClick={toolbarClick}
             actionComplete={actionComplete}
             actionBegin={actionBegin}
@@ -67,7 +94,9 @@ const toolbarClick = (args) => {
                     headerText="Operations"
                     field="name"
                     width="150"
-                  
+                    isPrimaryKey={true}
+                   
+                    
                 />
                 <ColumnDirective
                     columns={[
@@ -105,10 +134,12 @@ const toolbarClick = (args) => {
                     headerText="Total"
                     field="total"
                     width="100"
+                    isPrimaryKey={true}
                   
                 />
+                <ColumnDirective headerText='Action' width='100' commands={commands}></ColumnDirective>
             </ColumnsDirective>
-            <Inject services={[Page, Toolbar, Toolbar, Edit, Group]} />
+            <Inject services={[Page, CommandColumn, Toolbar, Edit, Group]} />
         </GridComponent>
     )
 }

@@ -7,6 +7,8 @@ export const OperationActionTypes = {
     REMOVE_OPERATION_TYPE:"REMOVE_OPERATION_TYPE",
     ADD_OPERATION :"ADD_OPERATION",
     GET_OPERATION:"GET_OPERATION",
+    UPDATE_OPERATION:"UPDATE_OPERATION",
+    DELETE_OPERATION:"DELETE_OPERATION"
   
 }
 
@@ -94,7 +96,10 @@ export const deleteOperationTypes=  (data) => async  (dispatch) => {
 
 export const getOperations=  (month,year) => async  (dispatch) => {
 
-
+    dispatch({
+        type:OperationActionTypes.GET_OPERATION,
+        payload:[],
+    })
     
     try {
         const request = await axios.get(`http://localhost:8080/api/operation/${month}/${year}`)
@@ -103,9 +108,7 @@ export const getOperations=  (month,year) => async  (dispatch) => {
        
         if(!request) return
 
-        if(!request.data[0].id){
-            return
-        }
+     
         dispatch({
             type:OperationActionTypes.GET_OPERATION,
             payload: request.data,
@@ -123,6 +126,35 @@ export const addOperation=  (data) => async  (dispatch) => {
        
         if(!request) return
         dispatch(getOperationTypes())
+    } catch (error) {
+        console.log({error});
+    }
+}
+
+export const updateOperation=  ({payload}) => async  (dispatch) => {
+    const  {data,month,year} = payload
+    
+    try {
+        const request = await axios.put(`http://localhost:8080/api/operation/${data.id}`,data)
+     
+       
+        if(!request) return
+       dispatch(getOperations(month,year))
+    } catch (error) {
+        console.log({error});
+    }
+}
+
+export const deleteOperation=  ({payload}) => async  (dispatch) => {
+     const  {data,month,year} = payload
+    
+    const {id} = data[0];
+ 
+    try {
+        const request = await axios.delete(`http://localhost:8080/api/operation/${id}`)
+       
+        if(!request) return
+        dispatch(getOperations(month,year))
     } catch (error) {
         console.log({error});
     }

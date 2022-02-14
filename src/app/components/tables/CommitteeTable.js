@@ -8,6 +8,7 @@ import {
     Toolbar,
     Group,
     Edit,
+    CommandColumn
 } from '@syncfusion/ej2-react-grids'
 
 import { DataManager } from '@syncfusion/ej2-data'
@@ -67,6 +68,12 @@ const statusTemplate = ({ status }) => {
     )
 }
 
+const commands = [{ type: 'Edit', buttonOption: { iconCss: ' e-icons e-edit', cssClass: 'e-flat' } },
+{ type: 'Delete', buttonOption: { iconCss: 'e-icons e-delete', cssClass: 'e-flat' } },
+{ type: 'Save', buttonOption: { iconCss: 'e-icons e-update', cssClass: 'e-flat' } },
+{ type: 'Cancel', buttonOption: { iconCss: 'e-icons e-cancel-icon', cssClass: 'e-flat' } }];
+
+
 function CommitteeTable({ data }) {
 
 
@@ -74,6 +81,7 @@ function CommitteeTable({ data }) {
 
      const {committee} = useSelector(state =>state.adultService)
  
+  
 
   
 
@@ -92,6 +100,23 @@ function CommitteeTable({ data }) {
         dispatch(addCommittee(args.data))
 
        }
+       if(args.requestType === "save"){
+
+        console.log({res:args.data});
+       
+        // dispatch(updateOperation({
+        //     type:OperationActionTypes.UPDATE_OPERATION,
+        //     payload:{data: args.data,month:month.current.value,year:year.current.value}
+        // }))
+    }
+    
+    if(args.requestType === "delete"){
+        console.log({res:args.data});
+        // dispatch(deleteOperation({
+        //     type:OperationActionTypes.DELETE_OPERATION,
+        //     payload:{data: args.data,month:month.current.value,year:year.current.value}
+        // }))
+    }
 
     }
 
@@ -118,7 +143,7 @@ function CommitteeTable({ data }) {
                 allowDeleting: true,
                 newRowPosition: 'Top',
             }}
-            toolbar={['Add', 'Edit', 'Delete', 'Update', 'Cancel']}
+            toolbar={['Add']}
             actionBegin={actionBegin}
             actionComplete={actionComplete}
             actionFailure={actionFailure}
@@ -141,8 +166,9 @@ function CommitteeTable({ data }) {
                     validationRules={{ required: true }}
                     template ={statusTemplate}
                 />
+                <ColumnDirective headerText='Action' width='100' commands={commands}></ColumnDirective>
             </ColumnsDirective>
-            <Inject services={[Page, Toolbar, Edit, Group]} />
+            <Inject services={[Page,CommandColumn, Toolbar, Edit, Group]} />
         </GridComponent>
     )
 }

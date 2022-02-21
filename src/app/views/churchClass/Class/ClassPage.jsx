@@ -1,8 +1,10 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState,useEffect } from 'react'
 import { Grid, Card } from '@material-ui/core'
 import { Breadcrumb } from 'app/components'
 import { CLASS_DATA } from './FakeClassData'
 import { Icon, Button, IconButton, Fab } from '@material-ui/core'
+import { useDispatch } from 'react-redux'
+import { getMemberInfo } from 'app/redux/adultService/AdultServiceActions'
 
 // import {
 //     Button,
@@ -25,6 +27,7 @@ const commands = ({ name }) => {
 }
 
 function ClassPage() {
+    const dispatch = useDispatch()
     const [openModal, setopenModal] = useState(true)
     const submitActionBtn = useRef(null)
     const handleClickOpen = () => {
@@ -35,6 +38,16 @@ function ClassPage() {
         submitActionBtn.current.click()
         console.log({ submitActionBtn })
     }
+
+      
+    useEffect(() => {
+
+         
+        dispatch(getMemberInfo())
+
+      
+       
+    }, [])
 
     return (
         <div className=" m-sm-30 mt-6">
@@ -102,7 +115,7 @@ function ClassPage() {
                     spacing={2}
                     style={{ width: '50vw', margin: '0 auto' }}
                 >
-                    <Grid item lg={12} xl={12} xs={12} md={12}>
+                    <Grid item lg={8} xl={8} xs={12} md={12}>
                         <Card raised className="px-6 pt-2 pb-4 mb-3">
                             <ClassForm
                                 setopenModal={setopenModal}
